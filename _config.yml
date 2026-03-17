@@ -1,3 +1,15 @@
 remote_theme: just-the-docs/just-the-docs
 plugins:
   - jekyll-remote-theme
+
+title: LoL Role Prediction Analysis
+description: DSC 80 Final Project
+theme: just-the-docs
+
+url: https://v1ct0rp.github.io
+baseurl: /League-of-Legends-Game-Analysis
+
+color_scheme: light
+
+search_enabled: true
+heading_anchors: true
