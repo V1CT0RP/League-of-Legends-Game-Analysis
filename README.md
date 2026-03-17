@@ -548,9 +548,222 @@ To keep the table readable, we focus on the most-picked champions.
 | Rumble   |         2049 |      54.12 |
 | Nautilus |         2045 |      47.87 |
 
+
 ## Assessment of Missingness
 
-texto aqui
+To better understand the structure of missing data in this dataset, we divide this section into three parts:
+
+1. identifying which columns contain missing values,  
+2. discussing representative examples of different missingness mechanisms,  
+3. testing whether the missingness of ban-related columns depends on an observed variable.  
+
+---
+
+### Missingness Overview
+
+After splitting the cleaned dataset into `df_players` and `df_teams`, we calculate the proportion of missing values in each column.
+
+Below, we summarize the columns with missing values in both datasets.
+
+| column          |   missing_pct |
+|:----------------|--------------:|
+| killsat25       |         3.725 |
+| assistsat25     |         3.725 |
+| opp_assistsat25 |         3.725 |
+| opp_killsat25   |         3.725 |
+| opp_deathsat25  |         3.725 |
+| xpdiffat25      |         3.725 |
+| opp_goldat25    |         3.725 |
+| golddiffat25    |         3.725 |
+| opp_xpat25      |         3.725 |
+| opp_csat25      |         3.725 |
+| xpat25          |         3.725 |
+| csat25          |         3.725 |
+| csdiffat25      |         3.725 |
+| deathsat25      |         3.725 |
+| goldat25        |         3.725 |
+| teamid          |         3.27  |
+| playerid        |         1.717 |
+| ban5            |         0.66  |
+| ban4            |         0.639 |
+| ban1            |         0.363 |
+| ban3            |         0.314 |
+| ban2            |         0.254 |
+| firstPick       |         0.119 |
+| opp_killsat20   |         0.108 |
+| opp_assistsat20 |         0.108 |
+| assistsat20     |         0.108 |
+| killsat20       |         0.108 |
+| csdiffat20      |         0.108 |
+| deathsat20      |         0.108 |
+| golddiffat20    |         0.108 |
+| opp_csat20      |         0.108 |
+| opp_xpat20      |         0.108 |
+| opp_goldat20    |         0.108 |
+| csat20          |         0.108 |
+| xpat20          |         0.108 |
+| goldat20        |         0.108 |
+| xpdiffat20      |         0.108 |
+| opp_deathsat20  |         0.108 |
+
+| column                 |   missing_pct |
+|:-----------------------|--------------:|
+| dragons (type unknown) |       100     |
+| xpat25                 |         3.725 |
+| opp_xpat25             |         3.725 |
+| opp_csat25             |         3.725 |
+| golddiffat25           |         3.725 |
+| opp_goldat25           |         3.725 |
+| csdiffat25             |         3.725 |
+| killsat25              |         3.725 |
+| assistsat25            |         3.725 |
+| deathsat25             |         3.725 |
+| opp_killsat25          |         3.725 |
+| opp_assistsat25        |         3.725 |
+| opp_deathsat25         |         3.725 |
+| xpdiffat25             |         3.725 |
+| goldat25               |         3.725 |
+| csat25                 |         3.725 |
+| teamid                 |         3.27  |
+| ban5                   |         0.66  |
+| ban4                   |         0.639 |
+| ban1                   |         0.363 |
+| ban3                   |         0.314 |
+| atakhans               |         0.282 |
+| opp_atakhans           |         0.282 |
+| pick1                  |         0.271 |
+| pick4                  |         0.271 |
+| pick3                  |         0.271 |
+| pick2                  |         0.271 |
+| pick5                  |         0.271 |
+| ban2                   |         0.254 |
+| firstPick              |         0.119 |
+| opp_deathsat20         |         0.108 |
+| opp_assistsat20        |         0.108 |
+| opp_killsat20          |         0.108 |
+| deathsat20             |         0.108 |
+| assistsat20            |         0.108 |
+| killsat20              |         0.108 |
+| csdiffat20             |         0.108 |
+| xpdiffat20             |         0.108 |
+| golddiffat20           |         0.108 |
+| opp_csat20             |         0.108 |
+| opp_xpat20             |         0.108 |
+| opp_goldat20           |         0.108 |
+| csat20                 |         0.108 |
+| xpat20                 |         0.108 |
+| goldat20               |         0.108 |
+| length_group           |         0.011 |
+
+We observe that most of the missingness is concentrated in game-state variables at fixed timestamps (e.g., 20 or 25 minutes), along with a few draft-related columns and identifiers.
+
+---
+
+### Examples of Missingness Mechanisms
+
+#### Missing by Design
+
+The clearest example of **Missing by Design** is the column `dragons (type unknown)`.
+
+This column is entirely missing in the dataset. This is expected, since dragon outcomes are recorded under known categories such as Infernal, Mountain, Ocean, Cloud, Hextech, and Chemtech. Since there are no observations corresponding to an unknown dragon type, the column is structurally empty rather than incomplete.
+
+---
+
+#### Missing at Random
+
+A good example of **Missing at Random (MAR)** is `golddiffat25`.
+
+Below, we compare the average game length between rows where the variable is present versus missing.
+
+| golddiffat25_missing   |   avg_game_length |
+|:-----------------------|------------------:|
+| False                  |            32.363 |
+| True                   |            22.295 |
+
+We observe that games with missing values are significantly shorter on average, suggesting that the statistic is unavailable when matches end before reaching 25 minutes.
+
+The same reasoning applies to `atakhans`, which is born in 20 minutes in the match.
+
+| atakhans_missing   |   avg_game_length |
+|:-------------------|------------------:|
+| False              |            32.008 |
+| True               |            24.962 |
+
+Since both missingness patterns depend on an observed variable (`gamelength`), they are best classified as MAR.
+
+---
+
+#### No clear MCAR example
+
+After exploring the dataset, we are not able to confidently identify a variable whose missingness is consistent with **Missing Completely at Random (MCAR)**.
+
+The closest candidate is `teamid`. However, its missingness varies significantly across leagues, indicating that the probability of missingness depends on an observed variable. Therefore, the mechanism is more consistent with MAR rather than MCAR.
+
+---
+
+### Missingness Dependency: Ban Columns
+
+To further investigate missingness, we focus on the ban columns (`ban1` to `ban5`).
+
+We define a new variable `ban_missing`, which is equal to `True` whenever at least one ban column is missing.
+
+We first analyze whether missingness depends on team side.
+
+
+| side   |   missing_pct |
+|:-------|--------------:|
+| Blue   |         1.278 |
+| Red    |         1.245 |
+
+We observe that the missingness rate is nearly identical between Blue and Red sides, suggesting no dependency on this variable.
+
+We then analyze missingness by league.
+
+<iframe
+  src="assets/ban-missingness-by-league.html"
+  width="100%"
+  height="560"
+  frameborder="0"
+></iframe>
+
+From the plot, we observe substantial variation across leagues. Some leagues show significantly higher missingness rates, suggesting that missing bans may be related to league-specific data collection or reporting practices.
+
+---
+
+### Permutation Test
+
+To formally test whether the missingness of the ban columns depends on `league`, we perform a permutation test using **Total Variation Distance (TVD)**.
+
+> “Does the missingness of the ban columns depend on league?”
+
+**Null Hypothesis (H₀):** The missingness of the ban columns is independent of `league`.  
+**Alternative Hypothesis (H₁):** The missingness of the ban columns depends on `league`.  
+
+<iframe
+  src="assets/ban-missingness-permutation-test.html"
+  width="100%"
+  height="560"
+  frameborder="0"
+></iframe>
+
+| metric       |    value |
+|:-------------|---------:|
+| observed_tvd | 0.394547 |
+| p_value      | 0        |
+
+We observe that the observed statistic lies far in the tail of the permutation distribution, and the resulting p-value is effectively zero. This indicates that such a large difference would be extremely unlikely under the null hypothesis.
+
+Therefore, we reject the null hypothesis and conclude that the missingness of the ban columns depends on `league`. Since `league` is an observed variable, this missingness mechanism is best characterized as **MAR**.
+
+---
+
+### Conclusion
+
+Overall, the missingness patterns in this dataset are largely explainable through observable factors.
+
+Some cases are structural, such as `dragons (type unknown)`, while others are driven by game duration or league-specific reporting differences. Importantly, we do not find strong evidence for MCAR, and even variables that initially appear to be MNAR can be better explained as MAR when considering additional observed variables.
+
+This is important for modeling, as missing values in this dataset are informative and should not be treated as purely random noise.
 
 ## Hypothesis Testing
 
