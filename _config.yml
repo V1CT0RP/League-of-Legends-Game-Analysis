@@ -8,7 +8,7 @@ description: DSC 80 Final Project
 url: https://v1ct0rp.github.io
 baseurl: /League-of-Legends-Game-Analysis
 
-color_scheme: dark
+color_scheme: light
 search_enabled: false
 heading_anchors: true
 nav_enabled: false
