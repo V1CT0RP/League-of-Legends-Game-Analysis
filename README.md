@@ -143,30 +143,31 @@ To illustrate this difference, the table below shows one example of a complete r
 |:-------------------|:-------------------|:---------------------------------------------|:---------|-------:|:--------|-----------:|:--------------------|-------:|--------:|----------------:|:-------|:-----------|:-------------|:------------------------------------------|:-------------|:----------------------------------------|------------:|:-----------|:-------|:--------|:-------|:--------|:-------|--------:|--------:|--------:|--------:|--------:|-------------:|---------:|--------:|---------:|----------:|------------:|-------------:|--------------:|--------------:|--------------:|-------------:|-------------:|-----------------:|-------------------:|-------------------:|-----------:|-------:|--------------:|----------:|--------------:|------------------:|----------------------:|------------:|------------:|---------:|---------:|------------:|-----------:|-------------------------:|---------:|-------------:|--------------:|----------:|--------------:|-------------:|-----------------:|-------------:|---------:|-------------:|-----------:|---------------:|-------------:|---------:|-------------:|----------------:|---------------------:|---------------:|-------------------:|-------------:|-----------------:|--------------------:|--------:|--------------:|-----------------------:|---------------------------:|-----------------:|--------------:|-------:|--------------:|-------:|---------------------:|--------------:|-------:|------------:|-------------:|-------------:|------------------:|------------:|-------:|------:|-----------:|--------------:|---------------:|------------------------:|--------------------------:|-------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|
 | LOLTMNT03_179647   | complete           | nan                                          | LFL2     |   2025 | Winter  |          0 | 2025-01-11 11:11:24 |      1 |   15.01 |               1 | Blue   | top        | PatkicaA     | oe:player:c659697694306de62d978569b84c344 | IziDream     | oe:team:84bc703e28859788770611d94cf02ac |           1 | Gnar       | Vi     | Skarner | Corki  | K'Sante | Sylas  |     nan |     nan |     nan |     nan |     nan |         1592 |        0 |       1 |        2 |         1 |           3 |           13 |             0 |             0 |             0 |            0 |            0 |                0 |                  0 |                  1 |     0.1131 | 0.603  |           nan |       nan |           nan |               nan |                   nan |         nan |         nan |      nan |      nan |         nan |        nan |                      nan |      nan |          nan |           nan |       nan |           nan |          nan |              nan |          nan |        0 |            0 |        nan |            nan |          nan |      nan |          nan |             nan |                  nan |            nan |                nan |            0 |                1 |               20156 | 759.648 |      0.40197  |                681.219 |                    629.736 |             7451 |             9 | 0.3392 |             2 | 0.0754 |                    3 |            17 | 0.6407 |       10668 |         7145 |      269.284 |          0.289981 |        9793 |    nan |   nan |        234 |           234 |              0 |                     nan |                       nan | 8.8191 |       3058 |     4466 |       75 |           3394 |         4603 |           79 |           -336 |         -137 |           -4 |           0 |             0 |            1 |               1 |                 0 |                0 |       4531 |     6777 |      119 |           5372 |         6968 |          125 |           -841 |         -191 |           -6 |           0 |             0 |            1 |               1 |                 2 |                0 |       6473 |     9072 |      154 |           7012 |         9562 |          154 |           -539 |         -490 |            0 |           1 |             1 |            2 |               2 |                 2 |                2 |       9244 |    12552 |      217 |           9020 |        12553 |          200 |            224 |           -1 |           17 |           1 |             1 |            2 |               2 |                 4 |                2 |
 | 11715-11715_game_1 | partial            | https://lpl.qq.com/es/stats.shtml?bmid=11715 | LPL      |   2025 | Split 1 |          0 | 2025-01-12 09:24:17 |      1 |   15.01 |               1 | Blue   | top        | Breathe      | oe:player:0d9b0a3b3a93a8f759c9d8ac8eef97c | Weibo Gaming | oe:team:606c6ac695907af3823ee6405c58ff1 |           1 | K'Sante    | Jayce  | Poppy   | Rumble | Rakan   | Rell   |     nan |     nan |     nan |     nan |     nan |         2123 |        1 |       4 |        0 |         3 |          17 |            5 |           nan |           nan |           nan |          nan |          nan |                0 |                nan |                nan |     0.4805 | 0.6218 |           nan |       nan |           nan |               nan |                   nan |         nan |         nan |      nan |      nan |         nan |        nan |                      nan |      nan |          nan |           nan |       nan |           nan |          nan |              nan |          nan |      nan |          nan |        nan |            nan |          nan |      nan |          nan |             nan |                  nan |            nan |                nan |          nan |              nan |                9830 | 277.814 |      0.123949 |                747.103 |                    nan     |              nan |            14 | 0.3957 |             3 | 0.0848 |                    5 |            32 | 0.9044 |       14706 |        10099 |      285.417 |          0.217523 |       12934 |    nan |   nan |        314 |           310 |              4 |                       0 |                         0 | 8.8742 |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |
+
 #### 2. Separating Team-Level and Player-Level Data
 
 The original dataset contains both player and team information in the same table. Each match contributes 12 rows in total: 10 rows for players (5 per team) and 2 rows for teams (1 per team).
 
 Because of this structure, several columns are only meaningful for players, while others are only meaningful for teams. As a result, many values appear as missing depending on the type of row. For example, team rows may contain `NaN` in player-specific statistics, while player rows may contain `NaN` in team-level objective metrics.
 
-To make the analysis more consistent, we split the data into two separate DataFrames:
+To make the analysis more consistent, I split the data into two separate DataFrames:
 
 - `df_players`, containing only player-level rows
 - `df_teams`, containing only team-level rows
 
-After that, we removed columns that were not relevant for each specific dataset. This helped reduce unnecessary missing values and made each table more focused on the type of analysis it would support.
+After that, I removed columns that were not relevant for each specific dataset. This helped reduce unnecessary missing values and made each table more focused on the type of analysis it would support.
 
 #### 3. Converting Game Length into Minutes
 
-The `gamelength` column was originally stored in seconds. Since minutes are much easier to interpret in the context of League of Legends matches, we converted this variable from seconds to minutes in both the player-level and team-level datasets.
+The `gamelength` column was originally stored in seconds. Since minutes are much easier to interpret in the context of League of Legends matches, I converted this variable from seconds to minutes in both the player-level and team-level datasets.
 
 This small transformation makes the data more readable and improves the interpretation of later visualizations and analyses.
 
 #### 4. Creating New Columns
 
-Finally, we created two additional variables to better summarize important parts of the game.
+Finally, I created two additional variables to better summarize important parts of the game.
 
-For the team-level dataset, we created `first_objective_count`, which counts how many key first objectives a team secured among:
+For the team-level dataset, I created `first_objective_count`, which counts how many key first objectives a team secured among:
 - first baron
 - first herald
 - first dragon
@@ -174,7 +175,7 @@ For the team-level dataset, we created `first_objective_count`, which counts how
 
 This feature provides a simple way to summarize early objective control.
 
-For the player-level dataset, we created `dmg_eff`, which measures damage efficiency by dividing total damage to champions by total gold. This gives a rough sense of how efficiently a player converted resources into combat impact.
+For the player-level dataset, I created `dmg_eff`, which measures damage efficiency by dividing total damage to champions by total gold. This gives a rough sense of how efficiently a player converted resources into combat impact.
 
 Together, these new variables make the dataset more informative for both the match outcome analysis and the role prediction task.
 
@@ -208,19 +209,20 @@ The table below shows a sample of the cleaned `df_teams` dataset.
 |------------|------:|--------:|
 | Players    | 92,360 | 120 |
 | Teams      | 18,472 | 143 |
+
 ### Exploratory Data Analysis (EDA)
 
-In this section, we explore the dataset to better understand the main patterns in professional League of Legends matches.  
-We divide this analysis into three parts: univariate analysis, bivariate analysis, and interesting aggregates.
+In this section, I explore the dataset to better understand the main patterns in professional League of Legends matches.  
+I divide this analysis into three parts: univariate analysis, bivariate analysis, and interesting aggregates.
 
 ---
 
 #### 1) Univariate Analysis
 
-In this part, we analyze individual variables to understand their distributions and general behavior.  
+In this part, I analyze individual variables to understand their distributions and general behavior.  
 The goal is to identify patterns, trends, and potential insights that may help explain match outcomes.
 
-We focus on the following aspects:
+I focus on the following aspects:
 
 - Most Picked and Banned Champions  
 - Game Length Distribution  
