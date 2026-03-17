@@ -110,3 +110,7 @@ body {
 .main-content li {
   margin-bottom: 2px;
 }
+
+.main-content p + p {
+  margin-top: 6px;   /* controla espaço entre parágrafos */
+}
