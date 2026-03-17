@@ -48,8 +48,7 @@ body {
 
 .main-content ul,
 .main-content ol {
-  margin-top: 4px;
-  margin-bottom: 8px;
+  margin: 4px 0 8px;
 }
 
 .main-content li {
@@ -66,8 +65,6 @@ body {
   font-weight: 400;
 }
 
-/* ===== TABLE WRAPPER FIX ===== */
-/* Esse wrapper é o que costuma criar a “caixa grande” atrás */
 .main-content .table-wrapper,
 .main-content .dataframe,
 .main-content .dataframe-wrapper,
@@ -75,7 +72,7 @@ body {
   display: inline-block !important;
   width: auto !important;
   max-width: 100% !important;
-  margin: 14px 0 20px 0 !important;
+  margin: 14px 0 20px;
   padding: 0 !important;
   background: transparent !important;
   border: none !important;
@@ -85,21 +82,13 @@ body {
   vertical-align: top;
 }
 
-/* Caso exista algum div direto envolvendo a tabela */
-.main-content p > table,
-.main-content div > table,
-.main-content .dataframe > table {
-  margin: 0;
-}
-
-/* ===== TABLE STYLE ===== */
 .main-content table {
   width: max-content !important;
   max-width: 100%;
   display: table !important;
+  margin: 0;
   border-collapse: separate;
   border-spacing: 0;
-  margin: 0;
   background: white;
   border: 1px solid #ececec;
   border-radius: 10px;
