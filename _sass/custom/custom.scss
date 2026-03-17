@@ -96,3 +96,17 @@ body {
 .main {
   max-width: 900px;
 }
+
+.main-content p {
+  margin-bottom: 8px;
+}
+
+.main-content ul,
+.main-content ol {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.main-content li {
+  margin-bottom: 2px;
+}
