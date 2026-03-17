@@ -49,7 +49,9 @@ A common discussion in competitive and casual play is understanding what truly d
 
 This project is motivated by that question:
 
-**Which factors most strongly impact the win or loss of a team: early-game advantage, macro objective control, or player performance (micro)?**
+<p style="text-align: center; font-size: 24px; font-weight: 600; margin: 40px 0; color: #2c3e50;">
+  "Which factors most strongly impact the win or loss of a team: early-game advantage, macro objective control, or player performance (micro)?"
+</p>
 
 Beyond analyzing these factors, we also approach a predictive task: identifying a player's role based on their in-game statistics.
 

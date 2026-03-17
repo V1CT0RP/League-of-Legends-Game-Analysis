@@ -80,7 +80,7 @@ body {
 
 /* WIDTH */
 .main {
-  max-width: 1100px;
+  max-width: 900px;
 }
 
 /* ===== TABLE IMPROVEMENTS (compact + readable) ===== */
@@ -130,4 +130,15 @@ body {
 .main-content table {
   display: block;
   overflow-x: auto;
+}
+
+.main-content h4 {
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.main-content p,
+.main-content li,
+.main-content td {
+  text-align: justify;
 }
