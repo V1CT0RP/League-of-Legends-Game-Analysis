@@ -878,9 +878,11 @@ $$
 
 Where:
 
-- $\mu_{win}$ is the mean value for winning teams or players,  
-- $\mu_{loss}$ is the mean value for losing teams or players,  
-- $\sigma$ is the standard deviation of the variable.  
+- $\mu_{win}$ is the mean value for winning teams or players  
+- $\mu_{loss}$ is the mean value for losing teams or players  
+- $\sigma$ is the standard deviation of the variable  
+
+This measures how many standard deviations separate wins from losses for each factor.
 
 This tells us how many standard deviations separate wins from losses for each factor.
 
