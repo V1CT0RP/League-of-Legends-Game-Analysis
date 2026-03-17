@@ -353,7 +353,7 @@ To make this section more organized, we divide the analysis into three main grou
 
 The main idea here is to compare key variables against win/loss results and see which patterns seem to be most strongly associated with victory.
 
-### 1) Early Game
+#### 2.1) Early Game
 In this part, we focus on early advantages and objective control in the first stages of the game.  
 More specifically, we analyze:
 
@@ -398,7 +398,7 @@ As teams secure more of these early objectives, their probability of winning als
 
 ---
 
-### 2) Macro Game
+#### 2.2) Macro Game
 Here, we focus on team-level control, objective management, and structural game advantages.  
 This includes:
 
@@ -432,7 +432,7 @@ In general, teams that secure more major objectives such as dragons, barons, tow
 
 ---
 
-### 3) Micro Game
+#### 2.3) Micro Game
 Finally, we analyze player-level performance and individual impact.  
 This includes:
 
@@ -479,6 +479,70 @@ Vision-related metrics also show meaningful differences between wins and losses.
 This suggests that map awareness and information control are relevant even at the individual level.
 
 ---
+
+#### 3) Interesting Aggregates
+
+To finish the exploratory analysis, we compute a few aggregate tables that summarize broader patterns in the dataset.  
+These tables help connect the earlier visual analysis to more structured comparisons.
+
+In this part, we focus on three aggregates:
+
+1. **Position x Stats**  
+   This table is especially important for the prediction task, since it helps show how different roles have distinct statistical profiles.
+
+2. **Game Length x Objectives**  
+   This helps us understand how match tempo affects objective control and team performance.
+
+3. **Champion Pick Rate x Win Rate**  
+   This allows us to compare champion popularity with champion success.
+
+---
+
+#### 1) Position x Stats
+
+In this table, we compare average player statistics by role.  
+This is useful because each position in League of Legends tends to have its own characteristic profile, and these differences will later help support the role prediction model.
+
+| position   |   assists |   cspm |   damagetochampions |   deaths |   kills |   visionscore |
+|:-----------|----------:|-------:|--------------------:|---------:|--------:|--------------:|
+| bot        |      6.09 |   9.02 |            24348.7  |     2.79 |    4.96 |         31.86 |
+| jng        |      8.12 |   6.33 |            14877.8  |     3.41 |    3.43 |         43.8  |
+| mid        |      6.71 |   8.39 |            23023.7  |     3.02 |    3.97 |         31.2  |
+| sup        |     11.05 |   1.03 |             7052.32 |     3.93 |    0.9  |        109.07 |
+| top        |      5.59 |   7.71 |            20035.5  |     3.3  |    3.16 |         28.67 |
+
+---
+
+#### 2) Game Length x Objectives
+
+Here, we group matches by duration and compare average team-level statistics.  
+This helps us understand how short, medium, and long games differ in terms of kills, objectives, and structural control.
+
+| length_group   |   barons |   elementaldrakes |   teamkills |   towers |
+|:---------------|---------:|------------------:|------------:|---------:|
+| Short          |     0    |              1.38 |       14.81 |     5.08 |
+| Medium         |     0.44 |              2.04 |       15.6  |     5.78 |
+| Long           |     0.9  |              2.73 |       18.99 |     6.92 |
+
+---
+
+#### 3) Champion Pick Rate x Win Rate
+
+Finally, we compare how often each champion is picked with how often that champion wins.  
+To keep the table readable, we focus on the most-picked champions.
+
+|          |   pick_count |   win_rate |
+|:---------|-------------:|-----------:|
+| Rell     |         2785 |      50.56 |
+| Xin Zhao |         2448 |      48.82 |
+| Varus    |         2245 |      53.05 |
+| Corki    |         2223 |      46.24 |
+| Ambessa  |         2213 |      49.75 |
+| Alistar  |         2164 |      51.16 |
+| Ezreal   |         2129 |      48.76 |
+| Rakan    |         2079 |      50.99 |
+| Rumble   |         2049 |      54.12 |
+| Nautilus |         2045 |      47.87 |
 
 ## Assessment of Missingness
 
