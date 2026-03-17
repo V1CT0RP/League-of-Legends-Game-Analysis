@@ -24,8 +24,8 @@ University of California, San Diego
 ## Overview
 
 - This project explores professional League of Legends match data to better understand what actually drives a team's success.  
-- We analyze how early-game advantage, macro decisions, and player performance impact win/loss outcomes.  
-- Additionally, we build a model to predict a player's role based on in-game statistics.
+- I analyze how early-game advantage, macro decisions, and player performance impact win/loss outcomes.  
+- Additionally, I build a model to predict a player's role based on in-game statistics.
 
 ---
 
@@ -343,6 +343,140 @@ The distribution of team damage highlights differences in game intensity and pla
 ></iframe>
 
 These metrics provide insight into player performance in terms of combat, farming efficiency, and map control.
+
+---
+
+#### 2) Bivariate Analysis
+
+In this part, we analyze how different in-game variables relate to match outcomes.  
+To make this section more organized, we divide the analysis into three main groups: early game, macro game, and micro game.
+
+The main idea here is to compare key variables against win/loss results and see which patterns seem to be most strongly associated with victory.
+
+### 1) Early Game
+In this part, we focus on early advantages and objective control in the first stages of the game.  
+More specifically, we analyze:
+
+- First objectives (`firstdragon`, `firstherald`, `void_grubs`, `firsttower`, `first_objective_count`)
+- Early stat differentials at 15 minutes (`golddiffat15`, `xpdiffat15`, `csdiffat15`)
+
+#### Early Stat Differentials vs Win/Loss
+
+<iframe
+  src="assets/early-stats-vs-winloss.html"
+  width="100%"
+  height="520"
+  frameborder="0"
+></iframe>
+
+These boxplots show that teams that win tend to have clearly better gold, XP, and CS differentials by minute 15.  
+This suggests that early leads are strongly associated with match outcomes.
+
+#### First Objectives vs Win/Loss
+
+<iframe
+  src="assets/early-first-objectives-vs-winloss.html"
+  width="100%"
+  height="520"
+  frameborder="0"
+></iframe>
+
+Winning teams secure first dragon, first herald, and first tower more often than losing teams.  
+This reinforces the idea that early objective control is an important indicator of future success.
+
+#### Early Objective Control vs Win Rate
+
+<iframe
+  src="assets/early-objective-control-vs-winrate.html"
+  width="100%"
+  height="520"
+  frameborder="0"
+></iframe>
+
+Both void grub control and total number of early first objectives show a positive relationship with win rate.  
+As teams secure more of these early objectives, their probability of winning also increases.
+
+---
+
+### 2) Macro Game
+Here, we focus on team-level control, objective management, and structural game advantages.  
+This includes:
+
+- Game variables (`side`, `firstPick`)
+- Objectives (`elementaldrakes`, `elders`, `heralds`, `void_grubs`, `barons`, `atakhans`, `towers`, `firsttothreetowers`, `firstmidtower`, `inhibitors`)
+- Control metrics (`wardsplaced`, `visionscore`)
+
+#### Game Variables vs Win Rate
+
+<iframe
+  src="assets/macro-game-variables-vs-winrate.html"
+  width="100%"
+  height="520"
+  frameborder="0"
+></iframe>
+
+This plot compares win rate by side and by first pick.  
+These variables help identify whether structural match conditions create any measurable advantage.
+
+#### Macro Objectives vs Win Rate
+
+<iframe
+  src="assets/macro-objectives-vs-winrate.html"
+  width="100%"
+  height="1120"
+  frameborder="0"
+></iframe>
+
+This set of plots shows a strong relationship between macro objective control and win rate.  
+In general, teams that secure more major objectives such as dragons, barons, towers, and inhibitors tend to win much more often.
+
+---
+
+### 3) Micro Game
+Finally, we analyze player-level performance and individual impact.  
+This includes:
+
+- Combat performance (`killdiff`, `kills`, `deaths`, `assists`, `kda`)
+- Damage metrics (`damagetochampions`, `dpm`, `damageshare`, `dmg_eff`)
+- Resource efficiency (`totalgold`, `earnedgoldshare`, `goldperminute`, `cspm`)
+- Teamfight impact (`killparticipation`, `doublekills`, `triplekills`, `quadrakills`, `pentakills`)
+- Vision and map interaction (`visionscore`, `vspm`, `wardsplaced`, `wardskilled`)
+
+#### Combat Performance vs Win/Loss
+
+<iframe
+  src="assets/micro-combat-vs-winloss.html"
+  width="100%"
+  height="520"
+  frameborder="0"
+></iframe>
+
+Winning players tend to show higher kills and higher KDA, while losing players generally have more deaths.  
+This indicates that combat efficiency is strongly associated with success.
+
+#### Damage Metrics vs Win/Loss
+
+<iframe
+  src="assets/micro-damage-vs-winloss.html"
+  width="100%"
+  height="520"
+  frameborder="0"
+></iframe>
+
+Players on winning teams tend to deal more damage, maintain higher damage per minute, and convert gold into damage more efficiently.  
+These patterns suggest that offensive efficiency is an important part of player-level impact.
+
+#### Vision Metrics vs Win/Loss
+
+<iframe
+  src="assets/micro-vision-vs-winloss.html"
+  width="100%"
+  height="520"
+  frameborder="0"
+></iframe>
+
+Vision-related metrics also show meaningful differences between wins and losses.  
+This suggests that map awareness and information control are relevant even at the individual level.
 
 ---
 
