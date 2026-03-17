@@ -111,3 +111,29 @@ body {
 .main-content p + p {
   margin-top: 6px;   /* controla espaço entre parágrafos */
 }
+
+.main-content table {
+  width: fit-content;
+  display: inline-table;
+}
+
+.main-content table + * {
+  width: fit-content;
+}
+
+.main-content .dataframe,
+.main-content table {
+  width: fit-content;
+  display: inline-block;
+  margin: 14px 0 20px;
+}
+
+.main-content .dataframe {
+  width: fit-content !important;
+  max-width: 100%;
+  display: inline-block;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+}
