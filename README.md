@@ -69,7 +69,7 @@ Each role has distinct patterns in terms of gold, damage, vision, and map intera
 
 ### The Dataset
 
-The dataset used in this project contains professional League of Legends match data collected from Oracle's Elixir. Each row represents a player’s performance in a specific match.
+The dataset used in this project contains professional League of Legends match data collected from Oracle's Elixir. Each row represents a player’s performance in a specific match. It has 165 columns and 120.636 rows
 
 The dataset includes information about:
 - Match metadata (league, patch, date)
