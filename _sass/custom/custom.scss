@@ -2,6 +2,10 @@ body {
   font-size: 19px;
 }
 
+.main {
+  max-width: 1000px;
+}
+
 .main-content {
   font-size: 18px;
   line-height: 1.8;
@@ -33,13 +37,69 @@ body {
   font-size: 18px;
   text-align: justify;
 }
+
+.main-content p {
+  margin: 6px 0;
+}
+
+.main-content p + p {
+  margin-top: 6px;
+}
+
+.main-content ul,
+.main-content ol {
+  margin-top: 4px;
+  margin-bottom: 8px;
+}
+
+.main-content li {
+  margin-bottom: 2px;
+}
+
+.main-content code {
+  background-color: #f5f6f7;
+  color: #6b7280;
+  padding: 2px 6px;
+  border: 1px solid #e5e7eb;
+  border-radius: 5px;
+  font-size: 13.5px;
+  font-weight: 400;
+}
+
+/* ===== TABLE WRAPPER FIX ===== */
+/* Esse wrapper é o que costuma criar a “caixa grande” atrás */
+.main-content .table-wrapper,
+.main-content .dataframe,
+.main-content .dataframe-wrapper,
+.main-content .table-container {
+  display: inline-block !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin: 14px 0 20px 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  vertical-align: top;
+}
+
+/* Caso exista algum div direto envolvendo a tabela */
+.main-content p > table,
+.main-content div > table,
+.main-content .dataframe > table {
+  margin: 0;
+}
+
+/* ===== TABLE STYLE ===== */
 .main-content table {
-  width: fit-content;
+  width: max-content !important;
   max-width: 100%;
-  display: table;
-  margin: 14px 0 20px;
+  display: table !important;
   border-collapse: separate;
   border-spacing: 0;
+  margin: 0;
   background: white;
   border: 1px solid #ececec;
   border-radius: 10px;
@@ -52,6 +112,7 @@ body {
   padding: 10px 14px;
   vertical-align: top;
   text-align: left;
+  white-space: nowrap;
 }
 
 .main-content th {
@@ -78,62 +139,4 @@ body {
 
 .main-content tr:hover {
   background-color: #f5f5f5;
-}
-
-.main-content code {
-  background-color: #f5f6f7;
-  color: #6b7280;
-  padding: 2px 6px;
-  border: 1px solid #e5e7eb;
-  border-radius: 5px;
-  font-size: 13.5px;
-  font-weight: 400;
-}
-
-.main {
-  max-width: 1000px;
-}
-
-.main-content p {
-  margin: 6px 0;
-}
-
-.main-content ul,
-.main-content ol {
-  margin-top: 4px;
-  margin-bottom: 8px;
-}
-
-.main-content li {
-  margin-bottom: 2px;
-}
-
-.main-content p + p {
-  margin-top: 6px;   /* controla espaço entre parágrafos */
-}
-
-.main-content table {
-  width: fit-content;
-  display: inline-table;
-}
-
-.main-content table + * {
-  width: fit-content;
-}
-
-.main-content .dataframe,
-.main-content table {
-  width: fit-content;
-  display: inline-block;
-  margin: 14px 0 20px;
-}
-
-.main-content .dataframe {
-  width: fit-content !important;
-  max-width: 100%;
-  display: inline-block;
-  background: transparent !important;
-  box-shadow: none !important;
-  border: none !important;
-  padding: 0 !important;
 }
