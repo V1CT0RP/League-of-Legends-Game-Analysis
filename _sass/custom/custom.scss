@@ -82,3 +82,52 @@ body {
 .main {
   max-width: 1100px;
 }
+
+/* ===== TABLE IMPROVEMENTS (compact + readable) ===== */
+
+.main-content table {
+  font-size: 15px;              /* ↓ menor que antes */
+  margin-top: 14px;
+  margin-bottom: 20px;
+  border: 1px solid #ececec;
+}
+
+.main-content th {
+  padding: 10px 12px;           /* ↓ menos altura */
+  font-size: 14px;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.main-content td {
+  padding: 10px 12px;           /* ↓ menos altura */
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* melhora leitura em tabelas grandes */
+.main-content td,
+.main-content th {
+  white-space: nowrap;          /* evita quebra feia */
+}
+
+/* zebra pattern suave */
+.main-content tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/* hover mais sutil */
+.main-content tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* evita tabela gigante ocupando muito espaço visual */
+.main-content table {
+  max-width: 100%;
+}
+
+/* opcional: scroll horizontal automático se precisar */
+.main-content table {
+  display: block;
+  overflow-x: auto;
+}
