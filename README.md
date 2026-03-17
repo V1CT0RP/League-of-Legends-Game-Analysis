@@ -1,4 +1,4 @@
-# League of Legends - Game Analysis and Role Prediction
+# **League of Legends - Game Analysis and Role Prediction**
 
 **By: Victor Picorelli**  
 **DSC 80** Final Project  
@@ -8,6 +8,7 @@ University of California, San Diego
 
 
 ## Sections
+- [Overview](#overview)
 - [Introduction](#introduction)
 - [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis)
 - [Assessment of Missingness](#assessment-of-missingness)

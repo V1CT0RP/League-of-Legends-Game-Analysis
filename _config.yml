@@ -13,5 +13,4 @@ color_scheme: light
 search_enabled: true
 heading_anchors: true
 
-layout: minimal
 nav_enabled: false
