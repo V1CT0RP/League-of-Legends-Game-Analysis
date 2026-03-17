@@ -765,7 +765,7 @@ Therefore, we reject the null hypothesis and conclude that the missingness of th
 
 Overall, the missingness patterns in this dataset are largely explainable through observable factors.
 
-Some cases are structural, such as `dragons (type unknown)`, while others are driven by game duration or league-specific reporting differences. Importantly, we do not find strong evidence for MCAR, and even variables that initially appear to be MNAR can be better explained as MAR when considering additional observed variables.
+Some cases are structural, such as `dragons (type unknown)`, while others are driven by game duration or league-specific reporting differences. Importantly, we do not find strong evidence for MCAR, and we also do not find strong evidence that any column in this dataset is MNAR. While some variables may initially appear to be MNAR, their missingness can be explained by observed variables such as game duration or league, making them more consistent with MAR.
 
 This is important for modeling, as missing values in this dataset are informative and should not be treated as purely random noise.
 
@@ -872,9 +872,7 @@ However, statistical significance by itself does not tell us which factor has th
 
 To compare the three factors on the same scale, we compute a standardized effect size using:
 
-$$
-\text{Effect Size} = \frac{\mu_{win} - \mu_{loss}}{\sigma}
-$$
+\[\text{Effect Size} = \frac{\mu_{win} - \mu_{loss}}{\sigma}\]
 
 Where:
 
