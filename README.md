@@ -258,8 +258,9 @@ It gives a clear view of the current meta and highlights which champions are mos
   frameborder="0"
 ></iframe>
 
-Most matches are concentrated within a relatively narrow time range, suggesting a consistent game duration in professional play.  
-Outliers represent unusually short or long matches.
+Most matches are concentrated between 25 and 35 minutes, indicating a fairly consistent game duration in professional play.
+
+There are a few outliers on both ends, representing unusually short or extended matches.
 
 ---
 
@@ -286,8 +287,7 @@ Kills and assists tend to have a wider spread, while deaths are more concentrate
   frameborder="0"
 ></iframe>
 
-Multi-kills are relatively rare events, with double kills being the most common.  
-Higher-tier multi-kills (quadra and penta) occur much less frequently.
+Multi-kills are relatively rare events in pro playu, with double kills being the most common, because it happens almost every team-fight.On the other hand, higher-tier multi-kills (quadra and penta) occur much less frequently.
 
 ---
 
@@ -300,7 +300,7 @@ Higher-tier multi-kills (quadra and penta) occur much less frequently.
   frameborder="0"
 ></iframe>
 
-This visualization shows how different dragon types appear across matches, reflecting objective dynamics during the game.
+This visualization shows how different dragon types appear across matches, it is nice to notice that the first 2 dragons in a match are completly random, while the 3 dragon and beyond in the same match, are all from the same time (If you kill 4 dragons you get the dragon soul, related to the dragon that is spawning after the second one). So its nice to notice that even though dragons stay the same after the second one, the distribution is still almost the same for all the 6 dragons types. 
 
 ---
 
@@ -313,7 +313,7 @@ This visualization shows how different dragon types appear across matches, refle
   frameborder="0"
 ></iframe>
 
-This plot shows how often major objectives are secured per game, helping to understand game pace and control.
+This plot shows how often major objectives are secured per game. As we can see, objectives play a huge part in LOL and therefore Herald, Barons and Atakhans are captured almost every game.
 
 ---
 
@@ -326,7 +326,7 @@ This plot shows how often major objectives are secured per game, helping to unde
   frameborder="0"
 ></iframe>
 
-The distribution of team damage highlights differences in game intensity and playstyle.
+This histogram shows the distribution of total damage per team to champions.
 
 ---
 
@@ -339,7 +339,7 @@ The distribution of team damage highlights differences in game intensity and pla
   frameborder="0"
 ></iframe>
 
-These metrics provide insight into player performance in terms of combat, farming efficiency, and map control.
+These metrics provide insight into player performance in terms of combat, farming efficiency, and map control. An interesting aspect to consider is how support players clearly shape these distributions. We observe a noticeable concentration at low damage values, which is largely driven by supports, as they are not primary damage dealers. Similarly, there is a strong peak at very low CSPM, reflecting the fact that supports intentionally avoid farming to allow their ADC to farm.In terms of vision, supports also stand out, appearing more dispersed but consistently contributing higher values. A vision score above 65 is typically associated with support roles, highlighting their responsibility in map control. As a result, these role-driven behaviors vause the distributions to deviate from a standard normal shape.
 
 ---
 
@@ -412,8 +412,7 @@ This includes:
   frameborder="0"
 ></iframe>
 
-This plot compares win rate by side and by first pick.  
-These variables help identify whether structural match conditions create any measurable advantage.
+This plot compares win rate by side and by first pick (the Blue side always has first pick).These graphs show that first picking a champion and therefore staying on the Blue side of the map is considered an advantage in pro-play.
 
 #### Macro Objectives vs Win Rate
 
@@ -426,6 +425,10 @@ These variables help identify whether structural match conditions create any mea
 
 This set of plots shows a strong relationship between macro objective control and win rate.  
 In general, teams that secure more major objectives such as dragons, barons, towers, and inhibitors tend to win much more often.
+
+It is particularly important to highlight the impact of securing the first tower, as it provides a significant map control advantage and helps widen the team's lead early in the game.
+
+Another key insight is the importance of late-game objectives such as Baron and Atakhan. Teams that secure these objectives are very likely to win, as they typically already hold an advantage going into the fight. Capturing these objectives further amplifies their lead and makes closing out the game considerably easier.
 
 ---
 
@@ -460,8 +463,11 @@ This indicates that combat efficiency is strongly associated with success.
   frameborder="0"
 ></iframe>
 
-Players on winning teams tend to deal more damage, maintain higher damage per minute, and convert gold into damage more efficiently.  
-These patterns suggest that offensive efficiency is an important part of player-level impact.
+Players on winning teams show slightly higher values across all three metrics.
+
+However, the difference between the distributions is relatively small, and there is significant overlap. In particular, damage efficiency is almost identical between wins and losses, suggesting that this metric alone provides little explanatory power.
+
+Overall, these features do not strongly differentiate match outcomes on their own.
 
 #### Vision Metrics vs Win/Loss
 
@@ -472,8 +478,9 @@ These patterns suggest that offensive efficiency is an important part of player-
   frameborder="0"
 ></iframe>
 
-Vision-related metrics also show meaningful differences between wins and losses.  
-This suggests that map awareness and information control are relevant even at the individual level.
+Players on winning teams show slightly higher values in both vision score and wards placed.
+
+However, the difference between the distributions is small, with a large overlap between wins and losses. This suggests that vision-related metrics alone do not strongly differentiate match outcomes.
 
 ---
 
