@@ -213,6 +213,138 @@ The table below shows a sample of the cleaned `df_teams` dataset.
 | Players    | 92,360 | 120 |
 | Teams      | 18,472 | 143 |
 
+### Exploratory Data Analysis (EDA)
+
+In this section, I explore the dataset to better understand the main patterns in professional League of Legends matches.  
+I divide this analysis into three parts: univariate analysis, bivariate analysis, and interesting aggregates.
+
+---
+
+#### 1) Univariate Analysis
+
+In this part, I analyze individual variables to understand their distributions and general behavior.  
+The goal is to identify patterns, trends, and potential insights that may help explain match outcomes.
+
+I focus on the following aspects:
+
+- Most Picked and Banned Champions  
+- Game Length Distribution  
+- KDA Distribution  
+- Multi-Kills Distribution  
+- Dragon Types Distribution  
+- Objectives per Game  
+- Damage to Champions Distribution  
+- Gold / CS / Vision Metrics  
+
+---
+
+#### Champion Presence (Picks and Bans)
+
+<iframe
+  src="assets/champion-picks-bans.html"
+  width="100%"
+  height="600"
+  frameborder="0"
+></iframe>
+
+This plot shows the most picked and banned champions in professional matches.  
+It gives a clear view of the current meta and highlights which champions are most contested.
+
+---
+
+#### Game Length Distribution
+
+<iframe
+  src="assets/game-length-distribution.html"
+  width="100%"
+  height="600"
+  frameborder="0"
+></iframe>
+
+Most matches are concentrated within a relatively narrow time range, suggesting a consistent game duration in professional play.  
+Outliers represent unusually short or long matches.
+
+---
+
+#### KDA Distributions (Kills, Deaths, Assists)
+
+<iframe
+  src="assets/kda-distributions.html"
+  width="100%"
+  height="500"
+  frameborder="0"
+></iframe>
+
+These distributions show how player combat statistics behave across matches.  
+Kills and assists tend to have a wider spread, while deaths are more concentrated.
+
+---
+
+#### Multi-Kills Distribution
+
+<iframe
+  src="assets/multi-kills-distribution.html"
+  width="100%"
+  height="550"
+  frameborder="0"
+></iframe>
+
+Multi-kills are relatively rare events, with double kills being the most common.  
+Higher-tier multi-kills (quadra and penta) occur much less frequently.
+
+---
+
+#### Dragon Types Distribution
+
+<iframe
+  src="assets/dragon-types-distribution.html"
+  width="100%"
+  height="550"
+  frameborder="0"
+></iframe>
+
+This visualization shows how different dragon types appear across matches, reflecting objective dynamics during the game.
+
+---
+
+#### Objectives per Game
+
+<iframe
+  src="assets/objectives-per-game.html"
+  width="100%"
+  height="500"
+  frameborder="0"
+></iframe>
+
+This plot shows how often major objectives are secured per game, helping to understand game pace and control.
+
+---
+
+#### Team Damage to Champions
+
+<iframe
+  src="assets/team-damage-distribution.html"
+  width="100%"
+  height="600"
+  frameborder="0"
+></iframe>
+
+The distribution of team damage highlights differences in game intensity and playstyle.
+
+---
+
+#### Player Performance Metrics (DPM, CSPM, Vision)
+
+<iframe
+  src="assets/performance-metrics-distributions.html"
+  width="100%"
+  height="500"
+  frameborder="0"
+></iframe>
+
+These metrics provide insight into player performance in terms of combat, farming efficiency, and map control.
+
+---
 
 ## Assessment of Missingness
 
