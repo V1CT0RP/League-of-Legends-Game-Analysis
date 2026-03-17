@@ -697,7 +697,11 @@ Since both missingness patterns depend on an observed variable (`gamelength`), t
 
 After exploring the dataset, we are not able to confidently identify a variable whose missingness is consistent with **Missing Completely at Random (MCAR)**.
 
-The closest candidate is `teamid`. However, its missingness varies significantly across leagues, indicating that the probability of missingness depends on an observed variable. Therefore, the mechanism is more consistent with MAR rather than MCAR.
+The closest candidate was `teamid`. However, as we can see, the missingness of `teamid` varies significantly across different `league` values
+
+This suggests that the probability of missingness depends on the `league` variable, which is an observed variable. Therefore, the missingness mechanism is more consistent with **MAR (Missing At Random)** rather than MCAR.
+
+**But within each league the specific teams with missing IDs are completly random**
 
 ---
 
@@ -717,7 +721,7 @@ We first analyze whether missingness depends on team side.
 
 We observe that the missingness rate is nearly identical between Blue and Red sides, suggesting no dependency on this variable.
 
-We then analyze missingness by league.
+We then analyze missingness by `league`.
 
 <iframe
   src="assets/ban-missingness-by-league.html"
@@ -767,7 +771,135 @@ This is important for modeling, as missing values in this dataset are informativ
 
 ## Hypothesis Testing
 
-texto aqui
+The main goal of the first part of this project is to understand which type of factor most strongly influences the outcome of a League of Legends match: **Early Game**, **Macro Game**, or **Micro Game**.
+
+To investigate this question, we perform three hypothesis tests comparing winning and losing teams across representative variables from each category:
+
+- **Early Game Advantage:** `golddiffat15`  
+- **Macro Objective Control:** `elementaldrakes`  
+- **Micro Performance:** `kda`  
+
+For each variable, we use the **difference in means** as the test statistic and perform a **permutation test** to evaluate whether the observed difference could reasonably occur by chance.
+
+At the end of this section, we compare the **standardized effect size** of all three variables to determine which factor appears to have the strongest relationship with match outcomes.
+
+---
+
+### 1. Early Game Advantage
+
+We first test whether winning teams tend to have a higher gold difference at 15 minutes (`golddiffat15`) than losing teams.
+
+**Null Hypothesis (H₀):**  
+The mean `golddiffat15` is the same for winning and losing teams.
+
+**Alternative Hypothesis (H₁):**  
+Winning teams have a higher mean `golddiffat15` than losing teams.
+
+<iframe
+  src="assets/hypothesis-early-game.html"
+  width="100%"
+  height="560"
+  frameborder="0"
+></iframe>
+
+We observe that the observed difference lies far to the right of the permutation distribution. This means that such a large separation between winning and losing teams would be extremely unlikely if the null hypothesis were true.
+
+As a result, we reject the null hypothesis. This suggests that early-game advantage, measured through `golddiffat15`, is strongly associated with match outcomes.
+
+---
+
+### 2. Macro Objective Control
+
+We next test whether winning teams tend to secure more elemental drakes than losing teams.
+
+**Null Hypothesis (H₀):**  
+The mean number of `elementaldrakes` is the same for winning and losing teams.
+
+**Alternative Hypothesis (H₁):**  
+Winning teams secure more `elementaldrakes` on average than losing teams.
+
+<iframe
+  src="assets/hypothesis-macro-game.html"
+  width="100%"
+  height="560"
+  frameborder="0"
+></iframe>
+
+Once again, the observed statistic is much larger than the values generated under permutation. This indicates that the difference is highly unlikely to be explained by random assignment alone.
+
+Therefore, we reject the null hypothesis and conclude that macro objective control, represented here by elemental drakes, also has a strong relationship with winning.
+
+---
+
+### 3. Micro Performance
+
+Finally, we test whether players on winning teams tend to have higher `kda` values than players on losing teams.
+
+**Null Hypothesis (H₀):**  
+The mean `kda` is the same for winning and losing players.
+
+**Alternative Hypothesis (H₁):**  
+Winning players have a higher mean `kda` than losing players.
+
+<iframe
+  src="assets/hypothesis-micro-game.html"
+  width="100%"
+  height="560"
+  frameborder="0"
+></iframe>
+
+The same pattern appears in the micro-level analysis. The observed difference is far larger than the values produced by the permutation distribution, making the null hypothesis highly implausible.
+
+We therefore reject the null hypothesis and conclude that micro performance, measured by `kda`, is also strongly associated with match outcomes.
+
+---
+
+### Hypothesis Test Summary
+
+| factor     | variable        |   observed_difference |   p_value |
+|:-----------|:----------------|----------------------:|----------:|
+| Early Game | golddiffat15    |            2690.55    |         0 |
+| Macro Game | elementaldrakes |               1.5668  |         0 |
+| Micro Game | kda             |               7.14793 |         0 |
+
+Across all three tests, we obtain extremely small p-values. This indicates that the differences between winning and losing teams are not likely to be due to random chance alone.
+
+However, statistical significance by itself does not tell us which factor has the strongest relationship with winning. Since the three variables are measured on very different scales, we cannot directly compare their raw mean differences.
+
+---
+
+### Comparing Standardized Effect Sizes
+
+To compare the three factors on the same scale, we compute a standardized effect size using:
+
+$$
+\text{Effect Size} = \frac{\mu_{win} - \mu_{loss}}{\sigma}
+$$
+
+Where:
+
+- $\mu_{win}$ is the mean value for winning teams or players,  
+- $\mu_{loss}$ is the mean value for losing teams or players,  
+- $\sigma$ is the standard deviation of the variable.  
+
+This tells us how many standard deviations separate wins from losses for each factor.
+
+| factor            | variable        |   effect_size |
+|:------------------|:----------------|--------------:|
+| Early Game        | golddiffat15    |       1.0464  |
+| Macro Objectives  | elementaldrakes |       1.18734 |
+| Micro Performance | kda             |       1.31639 |
+
+From these results, we observe that **micro performance (`kda`)** has the largest standardized effect size, followed by **macro objective control (`elementaldrakes`)**, and then **early-game advantage (`golddiffat15`)**.
+
+This suggests that, in this dataset, player combat performance has the strongest association with match outcomes, but only by a relatively small margin. Therefore, we can also assume that all three factors have a comparable level of importance, and that match outcomes are driven by a combination of early-game advantage, macro objective control, and micro performance rather than a single dominant factor.
+
+This result also makes sense when we think about how the game of League of Legends works. **Kills are one of the easiest ways to gain gold in the game**, and at the same time they remove gold and pressure from the opponent, since the killed player is dead and only returns to the game after a few seconds. Because of that, **getting kills creates an immediate gold advantage**.
+
+Once this gold advantage is spent on items, the players become stronger in terms of stats and overall power compared to the enemy team. As one team becomes stronger, it becomes easier for them to win team fights. Winning team fights usually leads to securing objectives such as dragons, towers, and barons, and more importantly more gold.
+
+In League of Legends everything is very interconnected. **Winning fights gives gold, gold makes players stronger, and stronger players are able to secure more objectives and control the map**. Because of this, although the result might seem somewhat expected or even obvious (at least for us), it is still interesting to see that the statistical analysis confirms this pattern. Our results show that **micro performance, captured through KDA, has the strongest relationship with match outcomes**, which aligns with one of the most common and easy ways teams win games in League of Legends: repeatedly killing opponents and using the resulting gold advantage to dominate the map and objectives.
+
 
 ## Framing a Prediction Problem
 
