@@ -12,3 +12,4 @@ color_scheme: light
 search_enabled: false
 heading_anchors: true
 nav_enabled: false
+math: mathjax

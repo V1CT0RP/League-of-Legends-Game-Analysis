@@ -779,7 +779,7 @@ To investigate this question, we perform three hypothesis tests comparing winnin
 - **Macro Objective Control:** `elementaldrakes`  
 - **Micro Performance:** `kda`  
 
-For each variable, we use the **difference in means** as the test statistic and perform a **permutation test** to evaluate whether the observed difference could reasonably occur by chance.
+For each variable, we use the **difference in means** as the test statistic and perform a **permutation test** to evaluate whether the observed difference could reasonably occur by chance. We use a significance level of α = 0.05.
 
 At the end of this section, we compare the **standardized effect size** of all three variables to determine which factor appears to have the strongest relationship with match outcomes.
 
@@ -898,9 +898,9 @@ This suggests that, in this dataset, player combat performance has the strongest
 
 This result also makes sense when we think about how the game of League of Legends works. **Kills are one of the easiest ways to gain gold in the game**, and at the same time they remove gold and pressure from the opponent, since the killed player is dead and only returns to the game after a few seconds. Because of that, **getting kills creates an immediate gold advantage**.
 
-Once this gold advantage is spent on items, the players become stronger in terms of stats and overall power compared to the enemy team. As one team becomes stronger, it becomes easier for them to win team fights. Winning team fights usually leads to securing objectives such as dragons, towers, and barons, and more importantly more gold.
+Once this **gold advantage** is spent on items, the players become stronger in terms of stats and overall power compared to the enemy team. As one team becomes stronger, it becomes easier for them to win team fights. **Winning team fights usually leads to securing objectives** such as dragons, towers, and barons, and more importantly more gold.
 
-In League of Legends everything is very interconnected. **Winning fights gives gold, gold makes players stronger, and stronger players are able to secure more objectives and control the map**. Because of this, although the result might seem somewhat expected or even obvious (at least for us), it is still interesting to see that the statistical analysis confirms this pattern. Our results show that **micro performance, captured through KDA, has the strongest relationship with match outcomes**, which aligns with one of the most common and easy ways teams win games in League of Legends: repeatedly killing opponents and using the resulting gold advantage to dominate the map and objectives.
+In League of Legends everything is very interconnected. **Winning fights gives gold, gold makes players stronger, and stronger players are able to secure more objectives and control the map**. Because of this, although the result might seem somewhat expected or even obvious (at least for us), it is still interesting to see that the statistical analysis confirms this pattern. Our results show that **micro performance, captured through KDA, has the strongest relationship with match outcomes**, which aligns with one of the most common and easy ways teams win games in League of Legends: **repeatedly killing opponents and using the resulting gold advantage to dominate the map and objectives.**
 
 
 ## Framing a Prediction Problem
