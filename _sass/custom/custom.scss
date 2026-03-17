@@ -7,6 +7,7 @@ body {
   line-height: 1.8;
 }
 
+/* TITLES */
 .main-content h1 {
   font-size: 50px;
   font-weight: 700;
@@ -15,27 +16,35 @@ body {
 
 .main-content h2 {
   font-size: 36px;
-  margin-top: 52px;
-  margin-bottom: 20px;
+  margin-top: 28px;
+  margin-bottom: 12px;
 }
 
 .main-content h3 {
   font-size: 26px;
   margin-top: 30px;
+  margin-bottom: 10px;
 }
 
+/* TEXT */
 .main-content p,
 .main-content li {
   font-size: 20px;
 }
 
+/* TABLE */
 .main-content table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 28px;
+  border-collapse: separate;   // importante!
+  border-spacing: 0;
+  margin-top: 20px;            // reduz espaço de cima
   margin-bottom: 28px;
   font-size: 19px;
   background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  border: none;                // remove borda externa feia
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
 .main-content th {
@@ -43,12 +52,14 @@ body {
   font-weight: 700;
   padding: 18px;
   text-align: left;
-  border: 1px solid #e6e6e6;
+  border: none;                // remove linha de cima
+  border-bottom: 1px solid #e6e6e6;
 }
 
 .main-content td {
   padding: 18px;
-  border: 1px solid #ececec;
+  border: none;
+  border-bottom: 1px solid #ececec;
   vertical-align: top;
 }
 
@@ -56,47 +67,18 @@ body {
   background-color: #fafafa;
 }
 
+/* CODE (colunas tipo `position`) */
 .main-content code {
-  background-color: #f1f3f5;
-  color: #333;
-  padding: 5px 9px;
-  border-radius: 6px;
-  font-size: 15px;
-  border: 1px solid #e0e0e0;
+  background-color: #f5f6f7;
+  color: #6b7280;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 13.5px;
+  border: 1px solid #e5e7eb;
+  font-weight: 400;
 }
 
+/* WIDTH */
 .main {
   max-width: 1100px;
-}
-
-.main-content h1,
-.main-content h2,
-.main-content h3 {
-  margin-top: 30px;   // antes tava ~50px
-  margin-bottom: 12px;
-}
-
-.main-content h2 {
-  margin-top: 28px;
-}
-
-
-.main-content code {
-  background-color: #f5f6f7;  // mais claro
-  color: #6b7280;             // cinza suave (ANTES era muito escuro)
-  padding: 3px 7px;
-  border-radius: 5px;
-  font-size: 14px;
-  border: 1px solid #e5e7eb;
-  font-weight: 400;           // remove peso pesado
-}
-
-.main-content code {
-  padding: 2px 6px;
-  font-size: 13.5px;
-}
-
-.main-content table {
-  border-radius: 10px;
-  overflow: hidden;
 }
