@@ -7,19 +7,6 @@ University of California, San Diego
 ---
 
 
-<div class="toc-box">
-  <h2>Sections</h2>
-  <a href="#introduction">Introduction</a><br>
-  <a href="#data-cleaning-and-exploratory-data-analysis">Data Cleaning and Exploratory Data Analysis</a><br>
-  <a href="#assessment-of-missingness">Assessment of Missingness</a><br>
-  <a href="#hypothesis-testing">Hypothesis Testing</a><br>
-  <a href="#framing-a-prediction-problem">Framing a Prediction Problem</a><br>
-  <a href="#baseline-model">Baseline Model</a><br>
-  <a href="#final-model">Final Model</a><br>
-  <a href="#fairness-analysis">Fairness Analysis</a>
-</div>
-
-
 ## Sections
 - [Introduction](#introduction)
 - [Data Cleaning and Exploratory Data Analysis](#data-cleaning-and-exploratory-data-analysis)
