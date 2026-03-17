@@ -890,6 +890,8 @@ This tells us how many standard deviations separate wins from losses for each fa
 | Macro Objectives  | elementaldrakes |       1.18734 |
 | Micro Performance | kda             |       1.31639 |
 
+### Results
+
 From these results, we observe that **micro performance (`kda`)** has the largest standardized effect size, followed by **macro objective control (`elementaldrakes`)**, and then **early-game advantage (`golddiffat15`)**.
 
 This suggests that, in this dataset, player combat performance has the strongest association with match outcomes, but only by a relatively small margin. Therefore, we can also assume that all three factors have a comparable level of importance, and that match outcomes are driven by a combination of early-game advantage, macro objective control, and micro performance rather than a single dominant factor.
