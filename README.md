@@ -23,9 +23,9 @@ University of California, San Diego
 
 ## Overview
 
-This project explores professional League of Legends match data to better understand what actually drives a team's success.  
-We analyze how early-game advantage, macro decisions, and player performance impact win/loss outcomes.  
-Additionally, we build a model to predict a player's role based on in-game statistics.
+- This project explores professional League of Legends match data to better understand what actually drives a team's success.  
+- We analyze how early-game advantage, macro decisions, and player performance impact win/loss outcomes.  
+- Additionally, we build a model to predict a player's role based on in-game statistics.
 
 ---
 
