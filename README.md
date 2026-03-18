@@ -870,25 +870,6 @@ However, statistical significance by itself does not tell us which factor has th
 
 ### Comparing Standardized Effect Sizes
 
-To compare the three factors on the same scale, we compute a standardized effect size using:
-
-$$
-\text{Effect Size} = \frac{\mu_{win} - \mu_{loss}}{\sigma}
-$$
-
-Where:
-
-- $\mu_{win}$ is the mean value for winning teams or players  
-- $\mu_{loss}$ is the mean value for losing teams or players  
-- $\sigma$ is the standard deviation of the variable 
-
-This tells us how many standard deviations separate wins from losses for each factor.
-
-| factor            | variable        |   effect_size |
-|:------------------|:----------------|--------------:|
-| Early Game        | golddiffat15    |       1.0464  |
-| Macro Objectives  | elementaldrakes |       1.18734 |
-| Micro Performance | kda             |       1.31639 |
 
 ### Results
 
