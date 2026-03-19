@@ -1,6 +1,6 @@
 ---
 layout: default
-title: League of Legends - Game Analysis and Role Prediction
+title: home
 ---
 
 
