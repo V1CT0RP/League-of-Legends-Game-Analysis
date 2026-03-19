@@ -1,3 +1,7 @@
+---
+title: Home
+---
+
 # **League of Legends - Game Analysis and Role Prediction**
 
 **By: Victor Picorelli**  

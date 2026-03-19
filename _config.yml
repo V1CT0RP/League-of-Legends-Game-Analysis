@@ -14,7 +14,6 @@ heading_anchors: true
 nav_enabled: false
 
 markdown: kramdown
-math: mathjax
 
 kramdown:
   input: GFM
