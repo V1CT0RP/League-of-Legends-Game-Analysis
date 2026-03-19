@@ -12,4 +12,10 @@ color_scheme: light
 search_enabled: false
 heading_anchors: true
 nav_enabled: false
+
+markdown: kramdown
 math: mathjax
+
+kramdown:
+  input: GFM
+  math_engine: mathjax

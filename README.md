@@ -1,3 +1,9 @@
+---
+layout: default
+title: League of Legends - Game Analysis and Role Prediction
+---
+
+
 # **League of Legends - Game Analysis and Role Prediction**
 
 **By: Victor Picorelli**  
@@ -875,6 +881,10 @@ To compare the three factors on the same scale, we compute a standardized effect
 $$
 \text{Effect Size} = \frac{\mu_{win} - \mu_{loss}}{\sigma}
 $$
+
+\[
+\text{Effect Size} = \frac{\mu_{win} - \mu_{loss}}{\sigma}
+\]
 
 Where:
 
