@@ -67,7 +67,7 @@ Each role has distinct patterns in terms of gold, damage, vision, and map intera
 
 ### The Dataset
 
-The dataset used in this project contains professional League of Legends match data collected from Oracle's Elixir. Each row represents a player’s performance in a specific match. It has 165 columns and 120.636 rows
+The dataset used in this project contains professional League of Legends match data collected from Oracle's Elixir (For this analysis im using the dataset from 2025). Each row represents a player’s performance in a specific match. It has 165 columns and 120.636 rows
 
 The dataset includes information about:
 - Match metadata (league, patch, date)
@@ -106,11 +106,9 @@ These features allow us to break the game into three main components: early game
 - **Micro Indicators**  
   Individual player performance is captured through combat and efficiency metrics. This includes basic stats like `kills`, `deaths`, and `assists`, as well as more advanced indicators such as damage output (`damagetochampions`, `dpm`), gold and resource efficiency(`totalgold`,`earnedgold`), and teamfight impact through multi-kills (`doublekill`, `triplekill`, `quadrakill`, and `pentakills`). Vision and map interaction at the player level also contribute to understanding individual impact.
 
-By organizing the data in this way, we are able to connect in-game behavior with measurable statistics, making it possible to both analyze what drives match outcomes and build predictive models based on player performance.
-
-By combining these different types of features, we are able to both:
+By combining these different types of features and dividing the statistcs in those 3 major classes, we are able to both:
 1. Analyze what contributes most to winning games  
-2. Build a predictive model that identifies player roles based on behavior and performance patterns  
+2. Build a predictive model that identifies player roles based on stats and performance patterns  
 
 ### Sample of the Original Dataset
 
@@ -129,20 +127,24 @@ To provide an overview of the structure of the dataset before any preprocessing,
 
 ### Data Cleaning
 
-To prepare the data for both the analytical and predictive parts of this project, we divided the cleaning process into four main steps: removing incomplete observations, separating team and player rows, converting game length into minutes, and creating new columns.
+To prepare the data for both the analytical and predictive parts of this project, we divided the cleaning process into four main steps:
+
+- Removing incomplete observations  
+- Separating team and player rows  
+- Converting game length into minutes  
+- Creating new columns  
 
 #### 1. Removing Incomplete Data
 
 One of the first checks in the dataset was the `datacompleteness` column, which indicates whether a row contains complete match information or only partial information.
 
-Because this project relies on detailed match statistics, rows labeled as incomplete or partial could not be used reliably. For that reason, we removed all rows that were not marked as `complete`. This step removed approximately 10,000 rows from the original dataset.
+Because this project relies on detailed match statistics, rows labeled as partial were not going to be useful. For that reason, we removed all rows that were not marked as `complete`. This step removed approximately 10,000 rows from the original dataset.
 
 To illustrate this difference, the table below shows one example of a complete row and one example of a non-complete row from the original dataset.
-
-| gameid             | datacompleteness   | url                                          | league   |   year | split   |   playoffs | date                |   game |   patch |   participantid | side   | position   | playername   | playerid                                  | teamname     | teamid                                  |   firstPick | champion   | ban1   | ban2    | ban3   | ban4    | ban5   |   pick1 |   pick2 |   pick3 |   pick4 |   pick5 |   gamelength |   result |   kills |   deaths |   assists |   teamkills |   teamdeaths |   doublekills |   triplekills |   quadrakills |   pentakills |   firstblood |   firstbloodkill |   firstbloodassist |   firstbloodvictim |   team kpm |   ckpm |   firstdragon |   dragons |   opp_dragons |   elementaldrakes |   opp_elementaldrakes |   infernals |   mountains |   clouds |   oceans |   chemtechs |   hextechs |   dragons (type unknown) |   elders |   opp_elders |   firstherald |   heralds |   opp_heralds |   void_grubs |   opp_void_grubs |   firstbaron |   barons |   opp_barons |   atakhans |   opp_atakhans |   firsttower |   towers |   opp_towers |   firstmidtower |   firsttothreetowers |   turretplates |   opp_turretplates |   inhibitors |   opp_inhibitors |   damagetochampions |     dpm |   damageshare |   damagetakenperminute |   damagemitigatedperminute |   damagetotowers |   wardsplaced |    wpm |   wardskilled |   wcpm |   controlwardsbought |   visionscore |   vspm |   totalgold |   earnedgold |   earned gpm |   earnedgoldshare |   goldspent |   gspd |   gpr |   total cs |   minionkills |   monsterkills |   monsterkillsownjungle |   monsterkillsenemyjungle |   cspm |   goldat10 |   xpat10 |   csat10 |   opp_goldat10 |   opp_xpat10 |   opp_csat10 |   golddiffat10 |   xpdiffat10 |   csdiffat10 |   killsat10 |   assistsat10 |   deathsat10 |   opp_killsat10 |   opp_assistsat10 |   opp_deathsat10 |   goldat15 |   xpat15 |   csat15 |   opp_goldat15 |   opp_xpat15 |   opp_csat15 |   golddiffat15 |   xpdiffat15 |   csdiffat15 |   killsat15 |   assistsat15 |   deathsat15 |   opp_killsat15 |   opp_assistsat15 |   opp_deathsat15 |   goldat20 |   xpat20 |   csat20 |   opp_goldat20 |   opp_xpat20 |   opp_csat20 |   golddiffat20 |   xpdiffat20 |   csdiffat20 |   killsat20 |   assistsat20 |   deathsat20 |   opp_killsat20 |   opp_assistsat20 |   opp_deathsat20 |   goldat25 |   xpat25 |   csat25 |   opp_goldat25 |   opp_xpat25 |   opp_csat25 |   golddiffat25 |   xpdiffat25 |   csdiffat25 |   killsat25 |   assistsat25 |   deathsat25 |   opp_killsat25 |   opp_assistsat25 |   opp_deathsat25 |
-|:-------------------|:-------------------|:---------------------------------------------|:---------|-------:|:--------|-----------:|:--------------------|-------:|--------:|----------------:|:-------|:-----------|:-------------|:------------------------------------------|:-------------|:----------------------------------------|------------:|:-----------|:-------|:--------|:-------|:--------|:-------|--------:|--------:|--------:|--------:|--------:|-------------:|---------:|--------:|---------:|----------:|------------:|-------------:|--------------:|--------------:|--------------:|-------------:|-------------:|-----------------:|-------------------:|-------------------:|-----------:|-------:|--------------:|----------:|--------------:|------------------:|----------------------:|------------:|------------:|---------:|---------:|------------:|-----------:|-------------------------:|---------:|-------------:|--------------:|----------:|--------------:|-------------:|-----------------:|-------------:|---------:|-------------:|-----------:|---------------:|-------------:|---------:|-------------:|----------------:|---------------------:|---------------:|-------------------:|-------------:|-----------------:|--------------------:|--------:|--------------:|-----------------------:|---------------------------:|-----------------:|--------------:|-------:|--------------:|-------:|---------------------:|--------------:|-------:|------------:|-------------:|-------------:|------------------:|------------:|-------:|------:|-----------:|--------------:|---------------:|------------------------:|--------------------------:|-------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|
-| LOLTMNT03_179647   | complete           | nan                                          | LFL2     |   2025 | Winter  |          0 | 2025-01-11 11:11:24 |      1 |   15.01 |               1 | Blue   | top        | PatkicaA     | oe:player:c659697694306de62d978569b84c344 | IziDream     | oe:team:84bc703e28859788770611d94cf02ac |           1 | Gnar       | Vi     | Skarner | Corki  | K'Sante | Sylas  |     nan |     nan |     nan |     nan |     nan |         1592 |        0 |       1 |        2 |         1 |           3 |           13 |             0 |             0 |             0 |            0 |            0 |                0 |                  0 |                  1 |     0.1131 | 0.603  |           nan |       nan |           nan |               nan |                   nan |         nan |         nan |      nan |      nan |         nan |        nan |                      nan |      nan |          nan |           nan |       nan |           nan |          nan |              nan |          nan |        0 |            0 |        nan |            nan |          nan |      nan |          nan |             nan |                  nan |            nan |                nan |            0 |                1 |               20156 | 759.648 |      0.40197  |                681.219 |                    629.736 |             7451 |             9 | 0.3392 |             2 | 0.0754 |                    3 |            17 | 0.6407 |       10668 |         7145 |      269.284 |          0.289981 |        9793 |    nan |   nan |        234 |           234 |              0 |                     nan |                       nan | 8.8191 |       3058 |     4466 |       75 |           3394 |         4603 |           79 |           -336 |         -137 |           -4 |           0 |             0 |            1 |               1 |                 0 |                0 |       4531 |     6777 |      119 |           5372 |         6968 |          125 |           -841 |         -191 |           -6 |           0 |             0 |            1 |               1 |                 2 |                0 |       6473 |     9072 |      154 |           7012 |         9562 |          154 |           -539 |         -490 |            0 |           1 |             1 |            2 |               2 |                 2 |                2 |       9244 |    12552 |      217 |           9020 |        12553 |          200 |            224 |           -1 |           17 |           1 |             1 |            2 |               2 |                 4 |                2 |
-| 11715-11715_game_1 | partial            | https://lpl.qq.com/es/stats.shtml?bmid=11715 | LPL      |   2025 | Split 1 |          0 | 2025-01-12 09:24:17 |      1 |   15.01 |               1 | Blue   | top        | Breathe      | oe:player:0d9b0a3b3a93a8f759c9d8ac8eef97c | Weibo Gaming | oe:team:606c6ac695907af3823ee6405c58ff1 |           1 | K'Sante    | Jayce  | Poppy   | Rumble | Rakan   | Rell   |     nan |     nan |     nan |     nan |     nan |         2123 |        1 |       4 |        0 |         3 |          17 |            5 |           nan |           nan |           nan |          nan |          nan |                0 |                nan |                nan |     0.4805 | 0.6218 |           nan |       nan |           nan |               nan |                   nan |         nan |         nan |      nan |      nan |         nan |        nan |                      nan |      nan |          nan |           nan |       nan |           nan |          nan |              nan |          nan |      nan |          nan |        nan |            nan |          nan |      nan |          nan |             nan |                  nan |            nan |                nan |          nan |              nan |                9830 | 277.814 |      0.123949 |                747.103 |                    nan     |              nan |            14 | 0.3957 |             3 | 0.0848 |                    5 |            32 | 0.9044 |       14706 |        10099 |      285.417 |          0.217523 |       12934 |    nan |   nan |        314 |           310 |              4 |                       0 |                         0 | 8.8742 |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |
+| gameid             | datacompleteness   | url                                          | league   |   year | split   |   playoffs | date                |   game |   patch |   participantid | side   | position   |   playername |   playerid | teamname          | teamid                                  |   firstPick |   champion | ban1   | ban2   | ban3    | ban4         | ban5    | pick1   | pick2   | pick3   | pick4   | pick5   |   gamelength |   result |   kills |   deaths |   assists |   teamkills |   teamdeaths |   doublekills |   triplekills |   quadrakills |   pentakills |   firstblood |   firstbloodkill |   firstbloodassist |   firstbloodvictim |   team kpm |   ckpm |   firstdragon |   dragons |   opp_dragons |   elementaldrakes |   opp_elementaldrakes |   infernals |   mountains |   clouds |   oceans |   chemtechs |   hextechs |   dragons (type unknown) |   elders |   opp_elders |   firstherald |   heralds |   opp_heralds |   void_grubs |   opp_void_grubs |   firstbaron |   barons |   opp_barons |   atakhans |   opp_atakhans |   firsttower |   towers |   opp_towers |   firstmidtower |   firsttothreetowers |   turretplates |   opp_turretplates |   inhibitors |   opp_inhibitors |   damagetochampions |     dpm |   damageshare |   damagetakenperminute |   damagemitigatedperminute |   damagetotowers |   wardsplaced |    wpm |   wardskilled |   wcpm |   controlwardsbought |   visionscore |   vspm |   totalgold |   earnedgold |   earned gpm |   earnedgoldshare |   goldspent |       gspd |    gpr |   total cs |   minionkills |   monsterkills |   monsterkillsownjungle |   monsterkillsenemyjungle |     cspm |   goldat10 |   xpat10 |   csat10 |   opp_goldat10 |   opp_xpat10 |   opp_csat10 |   golddiffat10 |   xpdiffat10 |   csdiffat10 |   killsat10 |   assistsat10 |   deathsat10 |   opp_killsat10 |   opp_assistsat10 |   opp_deathsat10 |   goldat15 |   xpat15 |   csat15 |   opp_goldat15 |   opp_xpat15 |   opp_csat15 |   golddiffat15 |   xpdiffat15 |   csdiffat15 |   killsat15 |   assistsat15 |   deathsat15 |   opp_killsat15 |   opp_assistsat15 |   opp_deathsat15 |   goldat20 |   xpat20 |   csat20 |   opp_goldat20 |   opp_xpat20 |   opp_csat20 |   golddiffat20 |   xpdiffat20 |   csdiffat20 |   killsat20 |   assistsat20 |   deathsat20 |   opp_killsat20 |   opp_assistsat20 |   opp_deathsat20 |   goldat25 |   xpat25 |   csat25 |   opp_goldat25 |   opp_xpat25 |   opp_csat25 |   golddiffat25 |   xpdiffat25 |   csdiffat25 |   killsat25 |   assistsat25 |   deathsat25 |   opp_killsat25 |   opp_assistsat25 |   opp_deathsat25 |
+|:-------------------|:-------------------|:---------------------------------------------|:---------|-------:|:--------|-----------:|:--------------------|-------:|--------:|----------------:|:-------|:-----------|-------------:|-----------:|:------------------|:----------------------------------------|------------:|-----------:|:-------|:-------|:--------|:-------------|:--------|:--------|:--------|:--------|:--------|:--------|-------------:|---------:|--------:|---------:|----------:|------------:|-------------:|--------------:|--------------:|--------------:|-------------:|-------------:|-----------------:|-------------------:|-------------------:|-----------:|-------:|--------------:|----------:|--------------:|------------------:|----------------------:|------------:|------------:|---------:|---------:|------------:|-----------:|-------------------------:|---------:|-------------:|--------------:|----------:|--------------:|-------------:|-----------------:|-------------:|---------:|-------------:|-----------:|---------------:|-------------:|---------:|-------------:|----------------:|---------------------:|---------------:|-------------------:|-------------:|-----------------:|--------------------:|--------:|--------------:|-----------------------:|---------------------------:|-----------------:|--------------:|-------:|--------------:|-------:|---------------------:|--------------:|-------:|------------:|-------------:|-------------:|------------------:|------------:|-----------:|-------:|-----------:|--------------:|---------------:|------------------------:|--------------------------:|---------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|-----------:|---------:|---------:|---------------:|-------------:|-------------:|---------------:|-------------:|-------------:|------------:|--------------:|-------------:|----------------:|------------------:|-----------------:|
+| LOLTMNT06_129692   | complete           | nan                                          | PRM      |   2025 | Summer  |          0 | 2025-07-19 17:02:26 |      2 |   15.13 |             100 | Blue   | team       |          nan |        nan | ROSSMANN Centaurs | oe:team:e46f2dda10740009ffb0c01498dc5ce |           1 |        nan | Gwen   | Varus  | Naafiri | Miss Fortune | Alistar | Annie   | Wukong  | Corki   | Braum   | Aatrox  |         1998 |        1 |      23 |        8 |        53 |          23 |            8 |             4 |             0 |             0 |            0 |            1 |              nan |                nan |                nan |     0.6907 | 0.9309 |             0 |         4 |             1 |                 4 |                     1 |           1 |           0 |        0 |        3 |           0 |          0 |                      nan |        0 |            0 |             0 |         0 |             1 |            3 |                0 |            1 |        1 |            0 |          1 |              0 |            1 |        8 |            3 |               0 |                    0 |              1 |                  9 |            1 |                0 |              100696 | 3023.9  |           nan |                3734.59 |                    3298.71 |            23400 |           106 | 3.1832 |            52 | 1.5616 |                   30 |           282 | 8.4685 |       65148 |        43390 |      1303    |               nan |       54076 | -0.0134455 |   0.29 |        nan |           860 |            175 |                     nan |                       nan |  31.0811 |      15832 |    18519 |      296 |          16641 |        19539 |          351 |           -809 |        -1020 |          -55 |           3 |             5 |            3 |               3 |                 6 |                3 |      25121 |    30114 |      478 |          27338 |        32460 |          551 |          -2217 |        -2346 |          -73 |           6 |            11 |            6 |               6 |                 9 |                6 |      36943 |    45007 |      644 |          35482 |        43179 |          716 |           1461 |         1828 |          -72 |          13 |            27 |            6 |               6 |                 9 |               13 |      46282 |    60418 |      822 |          42716 |        53862 |          880 |           3566 |         6556 |          -58 |          16 |            33 |            6 |               6 |                 9 |               16 |
+| 12616-12616_game_1 | partial            | https://lpl.qq.com/es/stats.shtml?bmid=12616 | LPL      |   2025 | Split 3 |          0 | 2025-08-15 09:18:00 |      1 |   15.15 |             200 | Red    | team       |          nan |        nan | Invictus Gaming   | oe:team:53a258f289c26d94431c0496a54e151 |           0 |        nan | Yunara | Varus  | Orianna | Poppy        | Lucian  | Taliyah | Gwen    | Skarner | Rell    | Jhin    |         1588 |        0 |       9 |       18 |        26 |           9 |           18 |           nan |           nan |           nan |          nan |            0 |              nan |                nan |                nan |     0.3401 | 1.0202 |             1 |         1 |             2 |               nan |                   nan |         nan |         nan |      nan |      nan |         nan |        nan |                        1 |      nan |          nan |           nan |         0 |             1 |            0 |                3 |          nan |        0 |            0 |        nan |            nan |            0 |        0 |            7 |             nan |                  nan |            nan |                nan |            0 |                1 |               43449 | 1641.65 |           nan |                3118.68 |                     nan    |              nan |            86 | 3.2494 |            51 | 1.927  |                   33 |           238 | 8.9924 |       44818 |        27242 |      1029.29 |               nan |       42390 | -0.0585103 | nan    |        nan |           nan |            152 |                     125 |                         3 | nan      |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |        nan |      nan |      nan |            nan |          nan |          nan |            nan |          nan |          nan |         nan |           nan |          nan |             nan |               nan |              nan |
 
 #### 2. Separating Team-Level and Player-Level Data
 
@@ -161,11 +163,9 @@ After that, we removed columns that were not relevant for each specific dataset.
 
 The `gamelength` column was originally stored in seconds. Since minutes are much easier to interpret in the context of League of Legends matches, we converted this variable from seconds to minutes in both the player-level and team-level datasets.
 
-This small transformation makes the data more readable and improves the interpretation of later visualizations and analyses.
-
 #### 4. Creating New Columns
 
-Finally, we created two additional variables to better summarize important parts of the game.
+Finally, we created two additional variables.
 
 For the team-level dataset, we created `first_objective_count`, which counts how many key first objectives a team secured among:
 - first baron
@@ -219,8 +219,7 @@ We divide this analysis into three parts: univariate analysis, bivariate analysi
 
 #### 1) Univariate Analysis
 
-In this part, we analyze individual variables to understand their distributions and general behavior.  
-The goal is to identify patterns, trends, and potential insights that may help explain match outcomes.
+In this part, we analyze individual variables to understand their distributions and general behavior, and also find some interinsting insights.  
 
 We focus on the following aspects:
 
@@ -300,7 +299,7 @@ Multi-kills are relatively rare events in pro playu, with double kills being the
   frameborder="0"
 ></iframe>
 
-This visualization shows how different dragon types appear across matches, it is nice to notice that the first 2 dragons in a match are completly random, while the 3 dragon and beyond in the same match, are all from the same time (If you kill 4 dragons you get the dragon soul, related to the dragon that is spawning after the second one). So its nice to notice that even though dragons stay the same after the second one, the distribution is still almost the same for all the 6 dragons types. 
+This visualization shows how different dragon types appear across matches, it is nice to notice that the first 2 dragons in a match are completly random, while the 3 dragon and beyond in the same match, are all from the same type (If you kill 4 dragons you get the dragon soul, related to the dragon that is spawning after the second one). So its nice to notice that even though dragons stay the same after the second one, the distribution is still almost the same for all the 6 dragons types. 
 
 ---
 
@@ -345,7 +344,7 @@ These metrics provide insight into player performance in terms of combat, farmin
 
 #### 2) Bivariate Analysis
 
-In this part, we analyze how different in-game variables relate to match outcomes.  
+In this part, we analyze how different in-game variables relate to match outcomes (Win/Loss).  
 To make this section more organized, we divide the analysis into three main groups: early game, macro game, and micro game.
 
 The main idea here is to compare key variables against win/loss results and see which patterns seem to be most strongly associated with victory.
@@ -465,7 +464,7 @@ This indicates that combat efficiency is strongly associated with success.
 
 Players on winning teams show slightly higher values across all three metrics.
 
-However, the difference between the distributions is relatively small, and there is significant overlap. In particular, damage efficiency is almost identical between wins and losses, suggesting that this metric alone provides little explanatory power.
+However, the difference between the distributions is relatively small, and there is significant overlap. In particular, damage efficiency is almost identical between wins and losses, suggesting that this metric doesn't help us at all.
 
 Overall, these features do not strongly differentiate match outcomes on their own.
 
@@ -486,8 +485,7 @@ However, the difference between the distributions is small, with a large overlap
 
 #### 3) Interesting Aggregates
 
-To finish the exploratory analysis, we compute a few aggregate tables that summarize broader patterns in the dataset.  
-These tables help connect the earlier visual analysis to more structured comparisons.
+To finish the exploratory analysis, we compute a few Pivot Tables that are interisting.
 
 In this part, we focus on three aggregates:
 
@@ -495,11 +493,8 @@ In this part, we focus on three aggregates:
    This table is especially important for the prediction task, since it helps show how different roles have distinct statistical profiles.
 
 2. **Game Length x Objectives**  
-   This helps us understand how match tempo affects objective control and team performance.
 
 3. **Champion Pick Rate x Win Rate**  
-   This allows us to compare champion popularity with champion success.
-
 ---
 
 #### 1) Position x Stats
@@ -520,7 +515,6 @@ This is useful because each position in League of Legends tends to have its own 
 #### 2) Game Length x Objectives
 
 Here, we group matches by duration and compare average team-level statistics.  
-This helps us understand how short, medium, and long games differ in terms of kills, objectives, and structural control.
 
 | length_group   |   barons |   elementaldrakes |   teamkills |   towers |
 |:---------------|---------:|------------------:|------------:|---------:|
@@ -665,7 +659,7 @@ We observe that most of the missingness is concentrated in game-state variables 
 
 The clearest example of **Missing by Design** is the column `dragons (type unknown)`.
 
-This column is entirely missing in the dataset. This is expected, since dragon outcomes are recorded under known categories such as Infernal, Mountain, Ocean, Cloud, Hextech, and Chemtech. Since there are no observations corresponding to an unknown dragon type, the column is structurally empty rather than incomplete.
+This column is entirely missing in the dataset. This is expected, since in 2025 there was no uknowkn dragon type, we only had 6 dragon types (Inferno, Mountain, Ocean, Cloud, Hextech, Chemtech), so for that reason it is all missing and therefore **Missing by Design**
 
 ---
 
@@ -699,15 +693,17 @@ After exploring the dataset, we are not able to confidently identify a variable 
 
 The closest candidate was `teamid`. However, as we can see, the missingness of `teamid` varies significantly across different `league` values
 
-This suggests that the probability of missingness depends on the `league` variable, which is an observed variable. Therefore, the missingness mechanism is more consistent with **MAR (Missing At Random)** rather than MCAR.
+This suggests that the probability of missingness depends on the `league` variable. Therefore, the missingness mechanism is more consistent with **MAR (Missing At Random)** rather than MCAR.
 
 **But within each league the specific teams with missing IDs are completly random**
 
 ---
 
-### Missingness Dependency: Ban Columns
+### Missingness Dependency: Ban Columns (Possibly MNAR)
 
 To further investigate missingness, we focus on the ban columns (`ban1` to `ban5`).
+
+At first glance, the missingness in these columns may appear to be **Missing Not At Random (MNAR)**,since missing bans may be due to incomplete draft records, data collection issues not recorded in the dataset, or cases where a team chose not to ban any champion (it is an option in the game not to ban anything).
 
 We define a new variable `ban_missing`, which is equal to `True` whenever at least one ban column is missing.
 
@@ -719,7 +715,7 @@ We first analyze whether missingness depends on team side.
 | Blue   |         1.278 |
 | Red    |         1.245 |
 
-We observe that the missingness rate is nearly identical between Blue and Red sides, suggesting no dependency on this variable.
+We observe that the missingness rate is nearly identical between Blue and Red sides, suggesting no dependency on this variable, and therefore maybe it is MNAR.
 
 We then analyze missingness by `league`.
 
@@ -730,13 +726,13 @@ We then analyze missingness by `league`.
   frameborder="0"
 ></iframe>
 
-From the plot, we observe substantial variation across leagues. Some leagues show significantly higher missingness rates, suggesting that missing bans may be related to league-specific data collection or reporting practices.
+From the plot, we observe that some leagues show higher missingness rates, suggesting that missing bans may be related to league-specific data collection or reporting practices.
 
 ---
 
 ### Permutation Test
 
-To formally test whether the missingness of the ban columns depends on `league`, we perform a permutation test using **Total Variation Distance (TVD)**.
+To test whether the missingness of the ban columns depends on `league`, we perform a permutation test using **Total Variation Distance (TVD)**.
 
 > “Does the missingness of the ban columns depend on league?”
 
@@ -753,27 +749,19 @@ To formally test whether the missingness of the ban columns depends on `league`,
 | metric       |    value |
 |:-------------|---------:|
 | observed_tvd | 0.394547 |
-| p_value      | 0        |
+| p_value      | 0.000    |
 
-We observe that the observed statistic lies far in the tail of the permutation distribution, and the resulting p-value is effectively zero. This indicates that such a large difference would be extremely unlikely under the null hypothesis.
+We observe that the observed statistic lies far in the raight of the permutation distribution, and the resulting p-value is  zero. This indicates that such a large difference would be extremely unlikely under the null hypothesis.
 
-Therefore, we reject the null hypothesis and conclude that the missingness of the ban columns depends on `league`. Since `league` is an observed variable, this missingness mechanism is best characterized as **MAR**.
+Therefore, we reject the null hypothesis and conclude that the missingness of the ban columns depends on `league`. And therefore this missingness mechanism is best characterized as **MAR**.
 
 ---
-
-### Conclusion
-
-Overall, the missingness patterns in this dataset are largely explainable through observable factors.
-
-Some cases are structural, such as `dragons (type unknown)`, while others are driven by game duration or league-specific reporting differences. Importantly, we do not find strong evidence for MCAR, and we also do not find strong evidence that any column in this dataset is MNAR. While some variables may initially appear to be MNAR, their missingness can be explained by observed variables such as game duration or league, making them more consistent with MAR.
-
-This is important for modeling, as missing values in this dataset are informative and should not be treated as purely random noise.
 
 ## Hypothesis Testing
 
 The main goal of the first part of this project is to understand which type of factor most strongly influences the outcome of a League of Legends match: **Early Game**, **Macro Game**, or **Micro Game**.
 
-To investigate this question, we perform three hypothesis tests comparing winning and losing teams across representative variables from each category:
+To investigate this question, we perform three hypothesis tests comparing winning and losing teams across variables from each category:
 
 - **Early Game Advantage:** `golddiffat15`  
 - **Macro Objective Control:** `elementaldrakes`  
@@ -848,7 +836,7 @@ Winning players have a higher mean `kda` than losing players.
   frameborder="0"
 ></iframe>
 
-The same pattern appears in the micro-level analysis. The observed difference is far larger than the values produced by the permutation distribution, making the null hypothesis highly implausible.
+The same thing happens in the Micro Game testin. The observed difference is far larger than the values produced by the permutation distribution, making the null hypothesis highly unlikely.
 
 We therefore reject the null hypothesis and conclude that micro performance, measured by `kda`, is also strongly associated with match outcomes.
 
@@ -862,7 +850,7 @@ We therefore reject the null hypothesis and conclude that micro performance, mea
 | Macro Game | elementaldrakes |               1.5668  |         0 |
 | Micro Game | kda             |               7.14793 |         0 |
 
-Across all three tests, we obtain extremely small p-values. This indicates that the differences between winning and losing teams are not likely to be due to random chance alone.
+Across all three tests, we obtain small p-values. This indicates that the differences between winning and losing teams are not likely to be due to random chance alone, but its do to some factors like the Early Game, Macro Game and Micro Game.
 
 However, statistical significance by itself does not tell us which factor has the strongest relationship with winning. Since the three variables are measured on very different scales, we cannot directly compare their raw mean differences.
 
@@ -878,8 +866,8 @@ $$
 
 Where:
 
-- $\mu_{win}$ is the mean value for winning teams or players  
-- $\mu_{loss}$ is the mean value for losing teams or players  
+- $\mu_{win}$ is the mean value for winning teams  
+- $\mu_{loss}$ is the mean value for losing teams  
 - $\sigma$ is the standard deviation of the variable 
 
 This tells us how many standard deviations separate wins from losses for each factor.
@@ -892,9 +880,9 @@ This tells us how many standard deviations separate wins from losses for each fa
 
 ### Results
 
-From these results, we observe that **micro performance (`kda`)** has the largest standardized effect size, followed by **macro objective control (`elementaldrakes`)**, and then **early-game advantage (`golddiffat15`)**.
+From these results, we observe that **micro performance (`kda`)** has the largest effect size, followed by **macro objective control (`elementaldrakes`)**, and then **early-game advantage (`golddiffat15`)**.
 
-This suggests that, in this dataset, player combat performance has the strongest association with match outcomes, but only by a relatively small margin. Therefore, we can also assume that all three factors have a comparable level of importance, and that match outcomes are driven by a combination of early-game advantage, macro objective control, and micro performance rather than a single dominant factor.
+This suggests that, in this dataset, player combat performance has the strongest association with match outcomes, but only by a relatively small margin. Therefore, we can also assume that all three factors have the same level of importance, and that match outcomes are driven by a combination of early-game advantage, macro objective control, and micro performance rather than a single dominant factor.
 
 This result also makes sense when we think about how the game of League of Legends works. **Kills are one of the easiest ways to gain gold in the game**, and at the same time they remove gold and pressure from the opponent, since the killed player is dead and only returns to the game after a few seconds. Because of that, **getting kills creates an immediate gold advantage**.
 
@@ -923,7 +911,7 @@ The response variable is:
 
 We chose this prediction problem because roles in League of Legends are strongly tied to different gameplay responsibilities, and these responsibilities tend to generate distinct statistical patterns. For example, support players usually accumulate high assist and vision numbers while maintaining low CS totals, whereas ADC players often stand out through high gold, damage, and farming volume. Jungle players also tend to differ from lane roles due to their unique involvement in objectives, skirmishes, and early-game actions.
 
-At the **time of prediction**, we assume that we observe a player's in-game performance statistics, but not their true labeled role. For this reason, we only use features that would realistically be available from the player's match performance itself.
+We only use features that would realistically be available from the player's match performance itself.
 
 The modeling dataset is constructed from the following columns:
 
@@ -952,17 +940,15 @@ The modeling dataset is constructed from the following columns:
 
 We specifically selected these columns because they capture the main dimensions that differentiate player roles: combat profile, farming behavior, map control, and resource generation.
 
-On the other hand, we intentionally excluded variables such as `monsterkills`, `damageshare`, per-minute statistics, and time-specific features such as `goldat15` or `xpat15`. While these variables may contain useful predictive signal, they are less appropriate for this prediction setting because they rely on information that is either derived in a more aggregated way or tied to match snapshots that are not always naturally available during play in the same way as final player performance metrics.
+On the other hand, we intentionally excluded variables such as `monsterkills`, `damageshare`, per-minute statistics, and time-specific features such as `goldat15` or `xpat15`. While these variables may contain useful predictive signal, they are less appropriate for this setting because they are not available during or immediately after the game like other features. Instead, they are typically derived from post-game analysis of professional matches, meaning they are not directly accessible within the game itself for use in prediction.
 
 To evaluate our classifier, we use **accuracy** as the primary metric. Since this is a multiclass problem with relatively balanced role frequencies, accuracy provides a direct and interpretable measure of how often the model correctly predicts the player's position.
 
-We also report **macro F1-score** as a secondary metric, since it helps verify that performance is not being driven only by easier-to-classify roles. This gives us a more balanced view of model quality across all five positions.
-
 ## Baseline Model
 
-To create a benchmark for this prediction task, we train a baseline model to predict a player's role (`position`) from their in-game statistics.
+To create a baseline for this prediction task, we train a baseline model to predict a player's role (`position`) from their in-game statistics.
 
-We use **Logistic Regression** as our baseline classifier. This is a natural starting point because it is simple, interpretable, and often performs well in multiclass classification problems when the classes can be separated using linear decision boundaries.
+We use **Logistic Regression** as our baseline classifier. This is a natural starting point because it is simple, interpretable, and often performs well in multiclass classification problems (unlike Linear Regression, which is designed for continuous outcomes, while Logistic Regression performs better for multiclass classification) when the classes can be separated using linear decision boundaries.
 
 All features in the baseline model are numerical, so we apply a **StandardScaler** before fitting the classifier. This is important because the variables are measured on very different scales. For instance, `visionscore`, `damagetochampions`, and `pentakills` operate on very different numeric ranges, and scaling allows the model to treat them more comparably.
 
@@ -989,24 +975,23 @@ The features used in the baseline model are:
 
 All of these variables are **quantitative**. No ordinal or nominal predictors are used in the baseline model, so no categorical encoding is required.
 
-To evaluate generalization performance, we split the data into training and test sets, train the model on the training data, and report performance on the held-out test set. We also use cross-validation on the training set to better understand how stable the model is across different folds.
+To evaluate generalization performance, we split the data into training and test sets, train the model on the training data, and report performance on the held-out test set. We also use cross-validation on the training set to better understand how the model performs across different folds and how it generalizes.
 
 ### Baseline Model Evaluation
 
 The baseline model achieves an overall **accuracy of about 75%**, which already suggests that player statistics contain strong information about in-game role.
 
-Looking at the confusion patterns, some roles are easier to identify than others. **Support** is classified especially well, which makes intuitive sense given its distinctive profile: high assists and vision-related metrics, but comparatively low CS and gold. **Jungle** also tends to perform well, likely because its statistical behavior differs meaningfully from traditional lane roles.
+Looking at the Confusion Matrix, some roles are easier to identify than others. **Support** is classified especially well, which makes intuitive sense given its distinctive profile: high assists and vision-related metrics, but comparatively low CS and gold. **Jungle** also tends to perform well, likely because its statistical behavior differs meaningfully from traditional lane roles.
 
-By contrast, **Top**, **Mid**, and **ADC** are more often confused with one another. This is expected, since these roles share several common patterns such as damage output, gold income, and combat involvement, even if their strategic responsibilities differ.
+By contrast, **Top**, **Mid**, and **ADC** are more often confused with one another. This is expected, since these roles share several common patterns such as damage output, gold income, and combat involvement.
 
 <div style="text-align: center;">
   <img src="assets/baseline-confusion-matrix.png" width="650">
   <p style="font-size: 14px; color: #555;">
-    Figure: Confusion matrix for the baseline Logistic Regression model.
   </p>
 </div>
 
-Overall, this baseline model performs reasonably well for a simple classifier. However, the remaining confusion between several roles indicates that there is still room for improvement. In the next step, we expand the feature space and test more flexible modeling approaches to see whether we can better capture role-specific behavior.
+Overall, this baseline model performs reasonably well for a simple classifier.
 
 ## Final Model
 
@@ -1015,7 +1000,7 @@ To improve upon the baseline model, we test a broader set of modeling strategies
 Our improvement plan has two main components:
 
 1. **Feature engineering**, so the model can capture player efficiency and role-specific playstyle patterns more directly  
-2. **Model comparison and hyperparameter tuning**, so we can evaluate whether more flexible algorithms are able to separate roles better than the baseline Logistic Regression model  
+2. **Model comparison and hyperparameter tuning**, so we can evaluate whether other types of classifiers like Decision Tree are able to separate roles better than the baseline Logistic Regression model  
 
 The models tested are:
 
@@ -1028,17 +1013,6 @@ The models tested are:
 - Gradient Boosting  
 - SVC  
 
-Each of these models offers a different way to capture structure in the data.
-
-- **Logistic Regression** remains a strong reference point because it is stable and interpretable  
-- **Tuned Logistic Regression** allows us to improve regularization choices and potentially refine class separation  
-- **Decision Trees** can capture nonlinear decision rules and interactions between variables  
-- **Random Forests** reduce the instability of single trees by averaging many trees together  
-- **Gradient Boosting** builds a sequence of trees that progressively correct previous errors, often producing stronger predictive performance  
-- **SVC** can capture more complex class boundaries, especially after feature scaling  
-
-We expect these models to improve on the baseline because player roles are not defined only by raw totals, but also by how players convert resources into impact. This motivates the feature engineering step.
-
 ### Feature Engineering
 
 To improve the model, we create several new features that capture **efficiency, playstyle, and role-specific behavior**, rather than relying only on raw statistics.
@@ -1048,9 +1022,9 @@ The engineered features are designed to reflect the underlying game process. Dif
 The engineered features are:
 
 
-| feature                | description                                              | role_signal                                                   |
+| feature                | description                                              | reasoning                                                   |
 |:-----------------------|:---------------------------------------------------------|:--------------------------------------------------------------|
-| kda                    | Combat efficiency from kills, assists, and deaths        | Helps separate aggressive and low-death roles                 |
+| kda                    | Combat efficiency from kills, assists, and deaths        | Helps separate aggressive and low-death roles like ADC                 |
 | dmg_p_gold             | Damage dealt to champions relative to gold earned        | Often higher for ADC and carry-oriented roles                 |
 | vision_p_gold          | Vision contribution relative to gold earned              | Typically higher for Support                                  |
 | cs_p_gold              | Farming efficiency relative to gold earned               | Often stronger for ADC and farm-heavy roles                   |
@@ -1060,7 +1034,6 @@ The engineered features are:
 | multikill_score        | Weighted multikill indicator for teamfight impact        | Highlights explosive teamfight-oriented carry roles           |
 
 
-These features help the model capture more informative role patterns that are less visible when using only raw totals.
 
 In addition to feature engineering, we also perform **hyperparameter tuning** for selected models. For example:
 
@@ -1068,7 +1041,6 @@ In addition to feature engineering, we also perform **hyperparameter tuning** fo
 - in Decision Trees, we tune depth and minimum split/leaf sizes  
 - in Random Forests, we tune the number of trees and tree complexity parameters  
 
-This process allows us to search for model settings that balance flexibility and generalization more effectively.
 
 ### Final Model Comparison
 
@@ -1093,28 +1065,21 @@ After training and evaluating all candidate models, we compare their cross-valid
   </p>
 </div>
 
-From the results table, we observe that the best-performing models are all relatively close in performance, with test accuracy generally around the mid-75% range. This suggests that the prediction problem is meaningful and learnable, but also that the baseline model was already fairly strong.
+From the results table, we observe that the best-performing models are relatively close in performance, with test accuracy around the mid-75% range. This suggests that the prediction task is meaningful and can be learned, but also that the baseline model was already quite strong.
 
-Among the tested models, **Gradient Boosting** achieves the strongest overall performance, with the highest test accuracy and macro F1-score. For that reason, we select **Gradient Boosting** as our final model.
+The confusion matrix shows patterns similar to the baseline. While there is a slight improvement in predicting the jungle (jng) role, the model still frequently confuses mid, top, and bot (ADC). This indicates that these roles have similar patterns, making them harder to distinguish.
 
-This model likely performs best because it can capture nonlinear interactions between features while still being flexible enough to benefit from the engineered variables we created. In a problem like role prediction, where behavior patterns are subtle and often depend on combinations of combat, vision, and farming statistics, this added flexibility is valuable.
+Among the tested models, Gradient Boosting achieves the best overall performance, with the highest test accuracy and macro F1-score. For this reason, we select Gradient Boosting as our final model. At the same time, the improvement over the baseline is not very large.
 
-At the same time, the improvement over the baseline is relatively modest. This indicates that much of the predictive signal is already present in the original feature set, and that role classification in this dataset is shaped by a combination of overlapping patterns rather than a single dominant feature.
-
-Overall, the final model improves on the baseline while staying consistent with the structure of the data and the gameplay logic behind role-specific performance.
 
 ## Fairness Analysis
 
-To evaluate whether our final model performs equally well across different subsets of the data, we conduct a fairness analysis based on **game length**.
+To evaluate whether our final model performs equally well across different subsets of the data, we conduct a fairness analysis based on **game length**. We decided to go with this, because the less time the game lasts, the lower the stats, and therefore this can impact the prediction, because in a short game an AD Carry can deal the same amount of dmg that a top laners does, which is an uncommon factor in longer games.
 
 We divide the dataset into two groups:
 
 - **Group X:** short games (game length < 25 minutes)  
 - **Group Y:** long games (game length ≥ 25 minutes)  
-
-This split is meaningful because shorter games are often more volatile and can be decided quickly through early advantages, while longer games tend to stabilize and allow players to accumulate more representative statistics of their role.
-
-### Evaluation Metric
 
 We use **accuracy** as our evaluation metric, since it is consistent with the metric used throughout our modeling process and provides a clear measure of overall prediction performance.
 
@@ -1123,7 +1088,7 @@ We use **accuracy** as our evaluation metric, since it is consistent with the me
 We perform a permutation test to evaluate whether the difference in accuracy between the two groups is statistically significant.
 
 - **Null Hypothesis (H₀):**  
-The model is fair with respect to game length. The accuracy for short games and long games is roughly the same, and any observed difference is due to random chance.
+The accuracy for short games and long games is approximately the same.
 
 - **Alternative Hypothesis (H₁):**  
 The model performs worse on short games than on long games.
@@ -1143,7 +1108,7 @@ This suggests that the model performs better on longer games.
 
 ### Permutation Test
 
-To assess whether this difference is statistically significant, we perform a permutation test with 1000 permutations. In each iteration, we randomly shuffle the game length labels and recompute the difference in accuracy between the two groups.
+To assess whether this difference is statistically significant, we perform a permutation test with 1000 permutations.
 
 <div style="text-align: center;">
   <img src="assets/fairness-permutation-test.png" width="700">
@@ -1161,6 +1126,6 @@ Since the p-value is well below common significance thresholds, we **reject the 
 
 This means that our model **is not equally accurate across the two groups**. Specifically, it performs significantly worse on short games than on long games.
 
-A possible explanation for this result is that in shorter games, player statistics may be less stable and less representative of their true role. For example, players may have fewer opportunities to accumulate gold, damage, or vision, making it harder for the model to distinguish between roles. In contrast, longer games allow clearer role-specific patterns to emerge, which improves model performance.
+A possible explanation is that in shorter games, player statistics are lower overall (such as gold, damage, and vision) and less stable, making them less representative of each role. Players have fewer opportunities to accumulate these stats, and roles can look more similar, for example, an ADC may deal similar damage to a top laner, which is uncommon in longer games. This makes it harder for the model to distinguish roles in short matches, while longer games show clearer patterns.
 
-Overall, this analysis highlights an important limitation of our model: its performance depends on game length, and it is less reliable in shorter matches.
+Therefore our model performance depends on game length, and it is less reliable in shorter matches.
