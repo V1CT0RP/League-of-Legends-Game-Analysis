@@ -1,6 +1,7 @@
 remote_theme: just-the-docs/just-the-docs
 plugins:
   - jekyll-remote-theme
+  - jekyll-include-cache
 
 title: League of Legends - Game Analysis and Role Prediction
 description: DSC 80 Final Project
@@ -14,7 +15,6 @@ heading_anchors: true
 nav_enabled: false
 
 markdown: kramdown
-
 kramdown:
   input: GFM
   math_engine: mathjax

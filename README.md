@@ -876,10 +876,6 @@ $$
 \text{Effect Size} = \frac{\mu_{win} - \mu_{loss}}{\sigma}
 $$
 
-\[
-\text{Effect Size} = \frac{\mu_{win} - \mu_{loss}}{\sigma}
-\]
-
 Where:
 
 - $\mu_{win}$ is the mean value for winning teams or players  
