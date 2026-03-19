@@ -1,9 +1,3 @@
----
-layout: default
-title: home
----
-
-
 # **League of Legends - Game Analysis and Role Prediction**
 
 **By: Victor Picorelli**  
