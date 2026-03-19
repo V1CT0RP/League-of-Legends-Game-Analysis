@@ -937,7 +937,18 @@ The modeling dataset is constructed from the following columns:
 - `total cs`: farming volume  
 - `position`: target variable  
 
-> **Insert table: df_players_model sample here**
+
+| position   |   kills |   deaths |   assists |   doublekills |   triplekills |   quadrakills |   pentakills |   firstbloodkill |   firstbloodassist |   firstbloodvictim |   damagetochampions |   damagetotowers |   wardsplaced |   wardskilled |   visionscore |   totalgold |   total cs |
+|:-----------|--------:|---------:|----------:|--------------:|--------------:|--------------:|-------------:|-----------------:|-------------------:|-------------------:|--------------------:|-----------------:|--------------:|--------------:|--------------:|------------:|-----------:|
+| sup        |       1 |        4 |         2 |             0 |             0 |             0 |            0 |                0 |                  0 |                  0 |                4117 |              475 |            52 |            12 |            94 |        6451 |         24 |
+| jng        |       3 |        0 |        13 |             0 |             0 |             0 |            0 |                0 |                  1 |                  0 |                7586 |             2217 |            10 |             4 |            38 |       11200 |        208 |
+| mid        |       5 |        1 |         9 |             0 |             0 |             0 |            0 |                0 |                  1 |                  0 |               18653 |             4739 |            14 |             8 |            32 |       13393 |        222 |
+| bot        |       7 |        4 |        13 |             1 |             0 |             0 |            0 |                1 |                  0 |                  0 |               37525 |            11324 |            14 |             4 |            24 |       19015 |        361 |
+| bot        |       6 |        0 |        18 |             1 |             0 |             0 |            0 |                0 |                  0 |                  0 |               26891 |             7248 |            11 |             8 |            30 |       11581 |        217 |
+| bot        |       9 |        1 |         6 |             1 |             0 |             0 |            0 |                0 |                  0 |                  0 |               28696 |             6384 |            15 |            16 |            45 |       14902 |        290 |
+| mid        |       1 |        5 |        11 |             0 |             0 |             0 |            0 |                0 |                  0 |                  0 |               23928 |             3839 |            18 |             7 |            45 |       13818 |        267 |
+| mid        |       4 |        2 |         9 |             1 |             0 |             0 |            0 |                0 |                  0 |                  0 |               18390 |            13335 |             6 |             3 |            16 |       11342 |        216 |
+
 
 We specifically selected these columns because they capture the main dimensions that differentiate player roles: combat profile, farming behavior, map control, and resource generation.
 
@@ -988,7 +999,12 @@ Looking at the confusion patterns, some roles are easier to identify than others
 
 By contrast, **Top**, **Mid**, and **ADC** are more often confused with one another. This is expected, since these roles share several common patterns such as damage output, gold income, and combat involvement, even if their strategic responsibilities differ.
 
-> **Insert figure: confusion matrix here**
+<div style="text-align: center;">
+  <img src="assets/baseline-confusion-matrix.png" width="650">
+  <p style="font-size: 14px; color: #555;">
+    Figure: Confusion matrix for the baseline Logistic Regression model.
+  </p>
+</div>
 
 Overall, this baseline model performs reasonably well for a simple classifier. However, the remaining confusion between several roles indicates that there is still room for improvement. In the next step, we expand the feature space and test more flexible modeling approaches to see whether we can better capture role-specific behavior.
 
@@ -1031,7 +1047,18 @@ The engineered features are designed to reflect the underlying game process. Dif
 
 The engineered features are:
 
-> **Insert table: engineered features summary here**
+
+| feature                | description                                              | role_signal                                                   |
+|:-----------------------|:---------------------------------------------------------|:--------------------------------------------------------------|
+| kda                    | Combat efficiency from kills, assists, and deaths        | Helps separate aggressive and low-death roles                 |
+| dmg_p_gold             | Damage dealt to champions relative to gold earned        | Often higher for ADC and carry-oriented roles                 |
+| vision_p_gold          | Vision contribution relative to gold earned              | Typically higher for Support                                  |
+| cs_p_gold              | Farming efficiency relative to gold earned               | Often stronger for ADC and farm-heavy roles                   |
+| firstblood_involvement | Early-game involvement through first blood participation | Useful for Jungle and roaming Mid profiles                    |
+| tower_dmg_p_gold       | Tower pressure relative to gold earned                   | Can help identify split-pushing or pressure-heavy Top players |
+| carry_score            | Damage output relative to combat participation           | Captures carry behavior beyond raw kills                      |
+| multikill_score        | Weighted multikill indicator for teamfight impact        | Highlights explosive teamfight-oriented carry roles           |
+
 
 These features help the model capture more informative role patterns that are less visible when using only raw totals.
 
@@ -1047,7 +1074,24 @@ This process allows us to search for model settings that balance flexibility and
 
 After training and evaluating all candidate models, we compare their cross-validation accuracy, test accuracy, macro F1-score, and best hyperparameter settings.
 
-> **Insert table: results_df here**
+|                                   |   cv_accuracy |   cv_std |   test_accuracy |   macro_f1 | best_params                                                                                           |
+|:----------------------------------|--------------:|---------:|----------------:|-----------:|:------------------------------------------------------------------------------------------------------|
+| Baseline Logistic Regression      |         74.82 |     0.3  |           74.92 |      74.61 | default                                                                                               |
+| Logistic Regression + FE          |         74.89 |     0.37 |           74.95 |      74.66 | default                                                                                               |
+| Logistic Regression + FE + Tuning |         74.95 |     0.43 |           75.09 |      74.81 | {'log-reg__C': 100, 'log-reg__penalty': 'l2'}                                                         |
+| Decision Tree                     |         66.13 |     0.29 |           66.65 |      66.7  | default                                                                                               |
+| Decision Tree + GridSearch        |         69.41 |     0.39 |           69.64 |      69.36 | {'tree__max_depth': 10, 'tree__min_samples_leaf': 5, 'tree__min_samples_split': 2}                    |
+| Random Forest                     |         74.34 |     0.37 |           74.82 |      74.54 | default                                                                                               |
+| Random Forest + Tuning            |         74.73 |     0.5  |           75.36 |      75.08 | {'rf__max_depth': 20, 'rf__min_samples_leaf': 2, 'rf__min_samples_split': 5, 'rf__n_estimators': 200} |
+| Gradient Boosting                 |         75.52 |     0.54 |           75.57 |      75.37 | default                                                                                               |
+| SVC                               |         75.13 |     0.23 |           75.53 |      75.29 | default                                                                                               |
+
+<div style="text-align: center;">
+  <img src="assets/final-model-confusion-matrix.png" width="650">
+  <p style="font-size: 14px; color: #555;">
+    Figure: Confusion matrix for the final model.
+  </p>
+</div>
 
 From the results table, we observe that the best-performing models are all relatively close in performance, with test accuracy generally around the mid-75% range. This suggests that the prediction problem is meaningful and learnable, but also that the baseline model was already fairly strong.
 
