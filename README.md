@@ -905,16 +905,216 @@ In League of Legends everything is very interconnected. **Winning fights gives g
 
 ## Framing a Prediction Problem
 
-texto aqui
+In the second part of this project, we move to predictive modeling.
+
+Our goal is to predict a player's **role** in a League of Legends match using only their observable in-game statistics. We focus on the players dataset, `df_players`, since each row represents an individual player's performance within a match and contains the types of features that naturally reflect role-specific behavior.
+
+This is a **multiclass classification problem**, since the response variable has five possible categories:
+
+- Top  
+- Jungle  
+- Mid  
+- ADC  
+- Support  
+
+The response variable is:
+
+**`position`**
+
+We chose this prediction problem because roles in League of Legends are strongly tied to different gameplay responsibilities, and these responsibilities tend to generate distinct statistical patterns. For example, support players usually accumulate high assist and vision numbers while maintaining low CS totals, whereas ADC players often stand out through high gold, damage, and farming volume. Jungle players also tend to differ from lane roles due to their unique involvement in objectives, skirmishes, and early-game actions.
+
+At the **time of prediction**, we assume that we observe a player's in-game performance statistics, but not their true labeled role. For this reason, we only use features that would realistically be available from the player's match performance itself.
+
+The modeling dataset is constructed from the following columns:
+
+- `kills`, `deaths`, `assists`: core combat outcomes that vary across roles  
+- `doublekills`, `triplekills`, `quadrakills`, `pentakills`: indicators of high-impact carry performance  
+- `firstbloodkill`, `firstbloodassist`, `firstbloodvictim`: early combat involvement  
+- `damagetochampions`: direct offensive contribution  
+- `damagetotowers`: map pressure and structure damage  
+- `wardsplaced`, `wardskilled`, `visionscore`: map control and vision behavior  
+- `totalgold`: overall resource accumulation  
+- `total cs`: farming volume  
+- `position`: target variable  
+
+> **Insert table: df_players_model sample here**
+
+We specifically selected these columns because they capture the main dimensions that differentiate player roles: combat profile, farming behavior, map control, and resource generation.
+
+On the other hand, we intentionally excluded variables such as `monsterkills`, `damageshare`, per-minute statistics, and time-specific features such as `goldat15` or `xpat15`. While these variables may contain useful predictive signal, they are less appropriate for this prediction setting because they rely on information that is either derived in a more aggregated way or tied to match snapshots that are not always naturally available during play in the same way as final player performance metrics.
+
+To evaluate our classifier, we use **accuracy** as the primary metric. Since this is a multiclass problem with relatively balanced role frequencies, accuracy provides a direct and interpretable measure of how often the model correctly predicts the player's position.
+
+We also report **macro F1-score** as a secondary metric, since it helps verify that performance is not being driven only by easier-to-classify roles. This gives us a more balanced view of model quality across all five positions.
 
 ## Baseline Model
 
-texto aqui
+To create a benchmark for this prediction task, we train a baseline model to predict a player's role (`position`) from their in-game statistics.
+
+We use **Logistic Regression** as our baseline classifier. This is a natural starting point because it is simple, interpretable, and often performs well in multiclass classification problems when the classes can be separated using linear decision boundaries.
+
+All features in the baseline model are numerical, so we apply a **StandardScaler** before fitting the classifier. This is important because the variables are measured on very different scales. For instance, `visionscore`, `damagetochampions`, and `pentakills` operate on very different numeric ranges, and scaling allows the model to treat them more comparably.
+
+The baseline model is implemented using a single **scikit-learn Pipeline**, which combines preprocessing and modeling in a unified workflow and helps prevent data leakage.
+
+The features used in the baseline model are:
+
+- `kills`
+- `deaths`
+- `assists`
+- `kda`
+- `doublekills`
+- `triplekills`
+- `quadrakills`
+- `pentakills`
+- `firstbloodkill`
+- `firstbloodassist`
+- `firstbloodvictim`
+- `damagetochampions`
+- `damagetotowers`
+- `visionscore`
+- `totalgold`
+- `total cs`
+
+All of these variables are **quantitative**. No ordinal or nominal predictors are used in the baseline model, so no categorical encoding is required.
+
+To evaluate generalization performance, we split the data into training and test sets, train the model on the training data, and report performance on the held-out test set. We also use cross-validation on the training set to better understand how stable the model is across different folds.
+
+### Baseline Model Evaluation
+
+The baseline model achieves an overall **accuracy of about 75%**, which already suggests that player statistics contain strong information about in-game role.
+
+Looking at the confusion patterns, some roles are easier to identify than others. **Support** is classified especially well, which makes intuitive sense given its distinctive profile: high assists and vision-related metrics, but comparatively low CS and gold. **Jungle** also tends to perform well, likely because its statistical behavior differs meaningfully from traditional lane roles.
+
+By contrast, **Top**, **Mid**, and **ADC** are more often confused with one another. This is expected, since these roles share several common patterns such as damage output, gold income, and combat involvement, even if their strategic responsibilities differ.
+
+> **Insert figure: confusion matrix here**
+
+Overall, this baseline model performs reasonably well for a simple classifier. However, the remaining confusion between several roles indicates that there is still room for improvement. In the next step, we expand the feature space and test more flexible modeling approaches to see whether we can better capture role-specific behavior.
 
 ## Final Model
 
-texto aqui
+To improve upon the baseline model, we test a broader set of modeling strategies and compare their performance on the same prediction task.
+
+Our improvement plan has two main components:
+
+1. **Feature engineering**, so the model can capture player efficiency and role-specific playstyle patterns more directly  
+2. **Model comparison and hyperparameter tuning**, so we can evaluate whether more flexible algorithms are able to separate roles better than the baseline Logistic Regression model  
+
+The models tested are:
+
+- Logistic Regression + Feature Engineering  
+- Logistic Regression + Feature Engineering + Hyperparameter Tuning  
+- Decision Tree  
+- Decision Tree + Grid Search  
+- Random Forest  
+- Random Forest + Hyperparameter Tuning  
+- Gradient Boosting  
+- SVC  
+
+Each of these models offers a different way to capture structure in the data.
+
+- **Logistic Regression** remains a strong reference point because it is stable and interpretable  
+- **Tuned Logistic Regression** allows us to improve regularization choices and potentially refine class separation  
+- **Decision Trees** can capture nonlinear decision rules and interactions between variables  
+- **Random Forests** reduce the instability of single trees by averaging many trees together  
+- **Gradient Boosting** builds a sequence of trees that progressively correct previous errors, often producing stronger predictive performance  
+- **SVC** can capture more complex class boundaries, especially after feature scaling  
+
+We expect these models to improve on the baseline because player roles are not defined only by raw totals, but also by how players convert resources into impact. This motivates the feature engineering step.
+
+### Feature Engineering
+
+To improve the model, we create several new features that capture **efficiency, playstyle, and role-specific behavior**, rather than relying only on raw statistics.
+
+The engineered features are designed to reflect the underlying game process. Different roles in League of Legends are not only distinguished by how much they do, but by **how** they generate impact. For example, supports tend to produce more vision relative to their gold, while ADC players often convert gold into damage more efficiently. Similarly, some roles are more associated with early skirmish participation or tower pressure.
+
+The engineered features are:
+
+> **Insert table: engineered features summary here**
+
+These features help the model capture more informative role patterns that are less visible when using only raw totals.
+
+In addition to feature engineering, we also perform **hyperparameter tuning** for selected models. For example:
+
+- in Logistic Regression, we tune regularization strength (`C`) and penalty type  
+- in Decision Trees, we tune depth and minimum split/leaf sizes  
+- in Random Forests, we tune the number of trees and tree complexity parameters  
+
+This process allows us to search for model settings that balance flexibility and generalization more effectively.
+
+### Final Model Comparison
+
+After training and evaluating all candidate models, we compare their cross-validation accuracy, test accuracy, macro F1-score, and best hyperparameter settings.
+
+> **Insert table: results_df here**
+
+From the results table, we observe that the best-performing models are all relatively close in performance, with test accuracy generally around the mid-75% range. This suggests that the prediction problem is meaningful and learnable, but also that the baseline model was already fairly strong.
+
+Among the tested models, **Gradient Boosting** achieves the strongest overall performance, with the highest test accuracy and macro F1-score. For that reason, we select **Gradient Boosting** as our final model.
+
+This model likely performs best because it can capture nonlinear interactions between features while still being flexible enough to benefit from the engineered variables we created. In a problem like role prediction, where behavior patterns are subtle and often depend on combinations of combat, vision, and farming statistics, this added flexibility is valuable.
+
+At the same time, the improvement over the baseline is relatively modest. This indicates that much of the predictive signal is already present in the original feature set, and that role classification in this dataset is shaped by a combination of overlapping patterns rather than a single dominant feature.
+
+Overall, the final model improves on the baseline while staying consistent with the structure of the data and the gameplay logic behind role-specific performance.
 
 ## Fairness Analysis
 
-texto aqui
+To evaluate whether our final model performs equally well across different subsets of the data, we conduct a fairness analysis based on **game length**.
+
+We divide the dataset into two groups:
+
+- **Group X:** short games (game length < 25 minutes)  
+- **Group Y:** long games (game length ≥ 25 minutes)  
+
+This split is meaningful because shorter games are often more volatile and can be decided quickly through early advantages, while longer games tend to stabilize and allow players to accumulate more representative statistics of their role.
+
+### Evaluation Metric
+
+We use **accuracy** as our evaluation metric, since it is consistent with the metric used throughout our modeling process and provides a clear measure of overall prediction performance.
+
+### Hypotheses
+
+We perform a permutation test to evaluate whether the difference in accuracy between the two groups is statistically significant.
+
+- **Null Hypothesis (H₀):**  
+The model is fair with respect to game length. The accuracy for short games and long games is roughly the same, and any observed difference is due to random chance.
+
+- **Alternative Hypothesis (H₁):**  
+The model performs worse on short games than on long games.
+
+### Observed Results
+
+The observed accuracies are:
+
+- Accuracy (short games): **72.06%**  
+- Accuracy (long games): **75.73%**  
+
+This results in an observed difference of:
+
+- **Observed difference (long − short): 0.0367**
+
+This suggests that the model performs better on longer games.
+
+### Permutation Test
+
+To assess whether this difference is statistically significant, we perform a permutation test with 1000 permutations. In each iteration, we randomly shuffle the game length labels and recompute the difference in accuracy between the two groups.
+
+> **Insert plot: permutation distribution here**
+
+### Results
+
+The permutation test yields:
+
+- **p-value = 0.002**
+
+This p-value is extremely small, indicating that the observed difference is very unlikely to have occurred under the null hypothesis.
+
+Since the p-value is well below common significance thresholds, we **reject the null hypothesis**.
+
+This means that our model **is not equally accurate across the two groups**. Specifically, it performs significantly worse on short games than on long games.
+
+A possible explanation for this result is that in shorter games, player statistics may be less stable and less representative of their true role. For example, players may have fewer opportunities to accumulate gold, damage, or vision, making it harder for the model to distinguish between roles. In contrast, longer games allow clearer role-specific patterns to emerge, which improves model performance.
+
+Overall, this analysis highlights an important limitation of our model: its performance depends on game length, and it is less reliable in shorter matches.
