@@ -1145,7 +1145,9 @@ This suggests that the model performs better on longer games.
 
 To assess whether this difference is statistically significant, we perform a permutation test with 1000 permutations. In each iteration, we randomly shuffle the game length labels and recompute the difference in accuracy between the two groups.
 
-> **Insert plot: permutation distribution here**
+<div style="text-align: center;">
+  <img src="assets/fairness-permutation-test.png" width="700">
+</div>
 
 ### Results
 
